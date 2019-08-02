@@ -6,6 +6,11 @@ namespace BudgetTest
     {
         public decimal Query(DateTime beginDate, DateTime endDate)
         {
+            if (beginDate > endDate)
+            {
+                return 0;
+            }
+
             throw new NotImplementedException();
         }
     }
