@@ -18,6 +18,16 @@ namespace BudgetTest
                 return 0;
             }
 
+            if (beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM")))
+            {
+                var budgets = _budgetRepository.GetAll();
+
+                if (budgets.Count == 0)
+                {
+                    return 0;
+                }
+            }
+
             throw new NotImplementedException();
         }
     }

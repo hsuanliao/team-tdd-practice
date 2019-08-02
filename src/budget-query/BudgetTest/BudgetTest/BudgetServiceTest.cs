@@ -12,17 +12,17 @@ namespace BudgetTest
         private BudgetService _budgetService;
 
         [Test]
+        public void Query_DateRangeInvalid_Return0()
+        {
+            BudgetShouldBe(new DateTime(2019, 1, 5), new DateTime(2019, 1, 1), 0m);
+        }
+
+        [Test]
         public void Query_FullMonthRepoHasNoBudget_Return0()
         {
             _budgetRepository.GetAll().Returns(new List<Budget>());
 
             BudgetShouldBe(new DateTime(2019, 1, 1), new DateTime(2019, 1, 31), 0m);
-        }
-
-        [Test]
-        public void QueryDateRangeInvalidate()
-        {
-            BudgetShouldBe(new DateTime(2019, 1, 5), new DateTime(2019, 1, 1), 0m);
         }
 
         [SetUp]
