@@ -40,6 +40,21 @@ namespace BudgetTest
             BudgetShouldBe(new DateTime(2019, 1, 1), new DateTime(2019, 1, 31), 0m);
         }
 
+        [Test]
+        public void Query_PartialMonthRepoHasBudget_ReturnAmount()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2019, 1, 1), new DateTime(2019, 1, 15), 150m);
+        }
+
         [SetUp]
         public void Setup()
         {
