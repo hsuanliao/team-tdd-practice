@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BudgetTest
 {
@@ -25,6 +26,11 @@ namespace BudgetTest
                 if (budgets.Count == 0)
                 {
                     return 0;
+                }
+
+                if (endDate.Day - beginDate.Day + 1 == DateTime.DaysInMonth(beginDate.Year, beginDate.Month))
+                {
+                    return budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")))?.Amount ?? 0;
                 }
             }
 
