@@ -18,6 +18,21 @@ namespace BudgetTest
         }
 
         [Test]
+        public void Query_FullMonthRepoHasBudget_ReturnAmount()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2019, 1, 1), new DateTime(2019, 1, 31), 310m);
+        }
+
+        [Test]
         public void Query_FullMonthRepoHasNoBudget_Return0()
         {
             _budgetRepository.GetAll().Returns(new List<Budget>());
