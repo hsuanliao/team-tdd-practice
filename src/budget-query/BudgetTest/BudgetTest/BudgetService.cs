@@ -22,16 +22,20 @@ namespace BudgetTest
             if (beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM")))
             {
                 var budgets = _budgetRepository.GetAll();
-
-                if (budgets.Count == 0)
+                var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
+                if (budget == null)
                 {
                     return 0;
                 }
 
-                if (endDate.Day - beginDate.Day + 1 == DateTime.DaysInMonth(beginDate.Year, beginDate.Month))
+                var daysInMonth = DateTime.DaysInMonth(beginDate.Year, beginDate.Month);
+                var intervalDays = endDate.Day - beginDate.Day + 1;
+                if (intervalDays == daysInMonth)
                 {
-                    return budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")))?.Amount ?? 0;
+                    return budget.Amount;
                 }
+
+                return intervalDays * budget.Amount / daysInMonth;
             }
 
             throw new NotImplementedException();
