@@ -28,7 +28,7 @@ namespace BudgetTest
                 }
             });
 
-            BudgetShouldBe(new DateTime(2019, 1, 25), new DateTime(2019, 2, 5), 65m);
+            BudgetShouldBe(new DateTime(2019, 1, 25), new DateTime(2019, 2, 5), 75m);
         }
 
         [Test]
