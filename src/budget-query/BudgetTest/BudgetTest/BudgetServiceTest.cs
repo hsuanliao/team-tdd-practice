@@ -12,6 +12,26 @@ namespace BudgetTest
         private BudgetService _budgetService;
 
         [Test]
+        public void Query_CrossTwoMonthRepoHasBudget_ReturnAmount()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                },
+                new Budget
+                {
+                    YearMonth = "201902",
+                    Amount = 28m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2019, 1, 25), new DateTime(2019, 2, 5), 65m);
+        }
+
+        [Test]
         public void Query_DateRangeInvalid_Return0()
         {
             BudgetShouldBe(new DateTime(2019, 1, 5), new DateTime(2019, 1, 1), 0m);
