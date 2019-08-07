@@ -29,7 +29,11 @@ namespace BudgetTest
 
             var totalBudget = 0m;
             var firstIntervalDays = DateTime.DaysInMonth(beginDate.Year, beginDate.Month) - beginDate.Day + 1;
-            totalBudget += CalculateBudgetAmount(beginDate, budgets, firstIntervalDays);
+            var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
+            if (budget != null)
+            {
+                totalBudget += firstIntervalDays * budget.DailyAmount();
+            }
 
             var lastIntervalDays = endDate.Day;
             totalBudget += CalculateBudgetAmount(endDate, budgets, lastIntervalDays);
