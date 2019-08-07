@@ -34,6 +34,15 @@ namespace BudgetTest
             var lastIntervalDays = endDate.Day;
             totalBudget += CalculateBudgetAmount(endDate, budgets, lastIntervalDays);
 
+            var yearInterval = endDate.Year - beginDate.Year;
+            var monthInterval = endDate.Month - beginDate.Month;
+            var midMonthInterval = yearInterval * 12 + monthInterval - 1;
+            for (var i = 1; i <= midMonthInterval; i++)
+            {
+                var addMonths = beginDate.AddMonths(i);
+                totalBudget += CalculateBudgetAmount(addMonths, budgets, DateTime.DaysInMonth(addMonths.Year, addMonths.Month));
+            }
+
             return totalBudget;
         }
 
