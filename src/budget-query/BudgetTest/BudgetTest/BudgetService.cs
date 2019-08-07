@@ -28,10 +28,10 @@ namespace BudgetTest
             }
 
             var totalBudget = 0m;
-            var firstIntervalDays = DateTime.DaysInMonth(beginDate.Year, beginDate.Month) - beginDate.Day + 1;
             var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
             if (budget != null)
             {
+                var firstIntervalDays = (budget.LastDay() - beginDate).Days + 1;
                 totalBudget += firstIntervalDays * budget.DailyAmount();
             }
 
