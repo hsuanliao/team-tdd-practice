@@ -46,7 +46,11 @@ namespace BudgetTest
             for (var i = 1; i <= midMonthInterval; i++)
             {
                 var addMonths = beginDate.AddMonths(i);
-                totalBudget += CalculateBudgetAmount(addMonths, budgets, DateTime.DaysInMonth(addMonths.Year, addMonths.Month));
+                var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(addMonths.ToString("yyyyMM")));
+                if (currentBudget != null)
+                {
+                    totalBudget += EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay()) * currentBudget.DailyAmount();
+                }
             }
 
             return totalBudget;
