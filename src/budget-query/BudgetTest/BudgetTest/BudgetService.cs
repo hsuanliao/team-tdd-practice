@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BudgetTest
@@ -23,8 +22,13 @@ namespace BudgetTest
             var budgets = _budgetRepository.GetAll();
             if (IsSameMonth(beginDate, endDate))
             {
-                var intervalDays = endDate.Day - beginDate.Day + 1;
-                return CalculateBudgetAmount(beginDate, budgets, intervalDays);
+                var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
+                if (budget == null)
+                {
+                    return 0;
+                }
+
+                return EffectiveDays(beginDate, endDate) * budget.DailyAmount();
             }
 
             var totalBudget = 0m;
@@ -54,17 +58,6 @@ namespace BudgetTest
             }
 
             return totalBudget;
-        }
-
-        private static decimal CalculateBudgetAmount(DateTime queryDate, IList<Budget> budgets, int intervalDays)
-        {
-            var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(queryDate.ToString("yyyyMM")));
-            if (budget == null)
-            {
-                return 0;
-            }
-
-            return intervalDays * budget.DailyAmount();
         }
 
         private static int EffectiveDays(DateTime beginDate, DateTime endDate)
