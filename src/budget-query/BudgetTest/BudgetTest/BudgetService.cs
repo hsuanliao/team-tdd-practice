@@ -31,8 +31,7 @@ namespace BudgetTest
             var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
             if (budget != null)
             {
-                var firstIntervalDays = (budget.LastDay() - beginDate).Days + 1;
-                totalBudget += firstIntervalDays * budget.DailyAmount();
+                totalBudget += EffectiveDays(beginDate, budget.LastDay()) * budget.DailyAmount();
             }
 
             var lastIntervalDays = endDate.Day;
@@ -59,6 +58,11 @@ namespace BudgetTest
             }
 
             return intervalDays * budget.DailyAmount();
+        }
+
+        private static int EffectiveDays(DateTime beginDate, DateTime endDate)
+        {
+            return (endDate - beginDate).Days + 1;
         }
 
         private static bool IsSameMonth(DateTime beginDate, DateTime endDate)
