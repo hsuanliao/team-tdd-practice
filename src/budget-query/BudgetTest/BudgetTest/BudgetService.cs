@@ -54,7 +54,7 @@ namespace BudgetTest
                 return 0;
             }
 
-            return intervalDays * budget.Amount / budget.Days();
+            return intervalDays * budget.DailyAmount();
         }
     }
 }
