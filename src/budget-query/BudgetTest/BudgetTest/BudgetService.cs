@@ -28,10 +28,10 @@ namespace BudgetTest
             }
 
             var totalBudget = 0m;
-            var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
-            if (budget != null)
+            var firstMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
+            if (firstMonthBudget != null)
             {
-                totalBudget += EffectiveDays(beginDate, budget.LastDay()) * budget.DailyAmount();
+                totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
             }
 
             var lastIntervalDays = endDate.Day;
