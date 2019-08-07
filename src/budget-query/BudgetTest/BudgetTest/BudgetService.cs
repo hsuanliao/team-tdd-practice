@@ -21,7 +21,7 @@ namespace BudgetTest
             }
 
             var budgets = _budgetRepository.GetAll();
-            if (beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM")))
+            if (IsSameMonth(beginDate, endDate))
             {
                 var intervalDays = endDate.Day - beginDate.Day + 1;
                 return CalculateBudgetAmount(beginDate, budgets, intervalDays);
@@ -55,6 +55,11 @@ namespace BudgetTest
             }
 
             return intervalDays * budget.DailyAmount();
+        }
+
+        private static bool IsSameMonth(DateTime beginDate, DateTime endDate)
+        {
+            return beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM"));
         }
     }
 }
