@@ -51,21 +51,23 @@ namespace BudgetTest
             {
                 var currentMonth = beginDate.AddMonths(i);
                 var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentMonth.ToString("yyyyMM")));
-                if (currentBudget != null)
+                if (currentBudget == null)
                 {
-                    if (IsSameMonth(beginDate, currentMonth))
-                    {
-                        totalBudget += EffectiveDays(beginDate, currentBudget.LastDay()) * currentBudget.DailyAmount();
-                    }
-                    else if (IsSameMonth(endDate, currentMonth))
-                    {
-                        totalBudget += EffectiveDays(currentBudget.FirstDay(), endDate) * currentBudget.DailyAmount();
-                    }
-                    else
-                    {
-                        totalBudget += EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay()) *
-                                       currentBudget.DailyAmount();
-                    }
+                    continue;
+                }
+
+                if (IsSameMonth(beginDate, currentMonth))
+                {
+                    totalBudget += EffectiveDays(beginDate, currentBudget.LastDay()) * currentBudget.DailyAmount();
+                }
+                else if (IsSameMonth(endDate, currentMonth))
+                {
+                    totalBudget += EffectiveDays(currentBudget.FirstDay(), endDate) * currentBudget.DailyAmount();
+                }
+                else
+                {
+                    totalBudget += EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay()) *
+                                   currentBudget.DailyAmount();
                 }
             }
 
