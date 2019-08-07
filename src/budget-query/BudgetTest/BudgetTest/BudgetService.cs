@@ -32,17 +32,6 @@ namespace BudgetTest
             }
 
             var totalBudget = 0m;
-            //var firstMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
-            //if (firstMonthBudget != null)
-            //{
-            //    totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
-            //}
-
-            //var lastMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(endDate.ToString("yyyyMM")));
-            //if (lastMonthBudget != null)
-            //{
-            //    totalBudget += EffectiveDays(lastMonthBudget.FirstDay(), endDate) * lastMonthBudget.DailyAmount();
-            //}
 
             var yearInterval = endDate.Year - beginDate.Year;
             var monthInterval = endDate.Month - beginDate.Month;
