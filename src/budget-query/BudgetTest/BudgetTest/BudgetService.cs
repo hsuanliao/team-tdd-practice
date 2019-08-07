@@ -48,13 +48,13 @@ namespace BudgetTest
 
         private static decimal CalculateBudgetAmount(DateTime queryDate, IList<Budget> budgets, int intervalDays)
         {
-            var daysInMonth = DateTime.DaysInMonth(queryDate.Year, queryDate.Month);
             var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(queryDate.ToString("yyyyMM")));
             if (budget == null)
             {
                 return 0;
             }
-            return intervalDays * budget.Amount / daysInMonth;
+
+            return intervalDays * budget.Amount / budget.Days();
         }
     }
 }
