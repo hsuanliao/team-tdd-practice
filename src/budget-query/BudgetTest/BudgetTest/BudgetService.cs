@@ -54,10 +54,6 @@ namespace BudgetTest
             {
                 return 0;
             }
-            if (intervalDays == daysInMonth)
-            {
-                return budget.Amount;
-            }
             return intervalDays * budget.Amount / daysInMonth;
         }
     }
