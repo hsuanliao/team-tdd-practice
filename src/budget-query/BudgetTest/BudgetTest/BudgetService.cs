@@ -38,15 +38,15 @@ namespace BudgetTest
             //    totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
             //}
 
-            var lastMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(endDate.ToString("yyyyMM")));
-            if (lastMonthBudget != null)
-            {
-                totalBudget += EffectiveDays(lastMonthBudget.FirstDay(), endDate) * lastMonthBudget.DailyAmount();
-            }
+            //var lastMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(endDate.ToString("yyyyMM")));
+            //if (lastMonthBudget != null)
+            //{
+            //    totalBudget += EffectiveDays(lastMonthBudget.FirstDay(), endDate) * lastMonthBudget.DailyAmount();
+            //}
 
             var yearInterval = endDate.Year - beginDate.Year;
             var monthInterval = endDate.Month - beginDate.Month;
-            var midMonthInterval = yearInterval * 12 + monthInterval - 1;
+            var midMonthInterval = yearInterval * 12 + monthInterval + 1;
             for (var i = 0; i <= midMonthInterval; i++)
             {
                 var currentMonth = beginDate.AddMonths(i);
@@ -56,6 +56,10 @@ namespace BudgetTest
                     if (IsSameMonth(beginDate, currentMonth))
                     {
                         totalBudget += EffectiveDays(beginDate, currentBudget.LastDay()) * currentBudget.DailyAmount();
+                    }
+                    else if (IsSameMonth(endDate, currentMonth))
+                    {
+                        totalBudget += EffectiveDays(currentBudget.FirstDay(), endDate) * currentBudget.DailyAmount();
                     }
                     else
                     {
