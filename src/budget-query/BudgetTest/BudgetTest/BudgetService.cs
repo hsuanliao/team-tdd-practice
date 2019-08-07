@@ -34,8 +34,11 @@ namespace BudgetTest
                 totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
             }
 
-            var lastIntervalDays = endDate.Day;
-            totalBudget += CalculateBudgetAmount(endDate, budgets, lastIntervalDays);
+            var lastMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(endDate.ToString("yyyyMM")));
+            if (lastMonthBudget != null)
+            {
+                totalBudget += EffectiveDays(lastMonthBudget.FirstDay(), endDate) * lastMonthBudget.DailyAmount();
+            }
 
             var yearInterval = endDate.Year - beginDate.Year;
             var monthInterval = endDate.Month - beginDate.Month;

@@ -14,8 +14,12 @@ namespace BudgetTest
 
         public int Days()
         {
-            var firstDay = DateTime.ParseExact($"{YearMonth}01", "yyyyMMdd", null);
-            return DateTime.DaysInMonth(firstDay.Year, firstDay.Month);
+            return DateTime.DaysInMonth(FirstDay().Year, FirstDay().Month);
+        }
+
+        public DateTime FirstDay()
+        {
+            return DateTime.ParseExact($"{YearMonth}01", "yyyyMMdd", null);
         }
 
         public DateTime LastDay()
