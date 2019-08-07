@@ -32,11 +32,11 @@ namespace BudgetTest
             }
 
             var totalBudget = 0m;
-            var firstMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
-            if (firstMonthBudget != null)
-            {
-                totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
-            }
+            //var firstMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
+            //if (firstMonthBudget != null)
+            //{
+            //    totalBudget += EffectiveDays(beginDate, firstMonthBudget.LastDay()) * firstMonthBudget.DailyAmount();
+            //}
 
             var lastMonthBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(endDate.ToString("yyyyMM")));
             if (lastMonthBudget != null)
@@ -47,13 +47,21 @@ namespace BudgetTest
             var yearInterval = endDate.Year - beginDate.Year;
             var monthInterval = endDate.Month - beginDate.Month;
             var midMonthInterval = yearInterval * 12 + monthInterval - 1;
-            for (var i = 1; i <= midMonthInterval; i++)
+            for (var i = 0; i <= midMonthInterval; i++)
             {
                 var currentMonth = beginDate.AddMonths(i);
                 var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentMonth.ToString("yyyyMM")));
                 if (currentBudget != null)
                 {
-                    totalBudget += EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay()) * currentBudget.DailyAmount();
+                    if (i == 0)
+                    {
+                        totalBudget += EffectiveDays(beginDate, currentBudget.LastDay()) * currentBudget.DailyAmount();
+                    }
+                    else
+                    {
+                        totalBudget += EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay()) *
+                                       currentBudget.DailyAmount();
+                    }
                 }
             }
 
