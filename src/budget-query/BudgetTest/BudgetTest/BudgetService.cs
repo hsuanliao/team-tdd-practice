@@ -36,6 +36,7 @@ namespace BudgetTest
             var yearInterval = endDate.Year - beginDate.Year;
             var monthInterval = endDate.Month - beginDate.Month;
             var midMonthInterval = yearInterval * 12 + monthInterval + 1;
+            var period = new Period(beginDate, endDate);
             for (var i = 0; i <= midMonthInterval; i++)
             {
                 var currentDate = beginDate.AddMonths(i);
@@ -45,8 +46,7 @@ namespace BudgetTest
                     continue;
                 }
 
-                var effectiveDays = new Period(beginDate, endDate).OverlappingDayCount(currentBudget);
-                totalBudget += effectiveDays * currentBudget.DailyAmount();
+                totalBudget += period.OverlappingDayCount(currentBudget) * currentBudget.DailyAmount();
             }
 
             return totalBudget;
