@@ -18,21 +18,20 @@ namespace BudgetTest
             return (endDate - beginDate).Days + 1;
         }
 
-        public int OverlappingDayCount(Budget budget)
+        public int OverlappingDayCount(Period another)
         {
-            var period = new Period(budget.FirstDay(), budget.LastDay());
-            if (EndDate < period.BeginDate || BeginDate > period.EndDate)
+            if (EndDate < another.BeginDate || BeginDate > another.EndDate)
             {
                 return 0;
             }
 
-            var overlappingBeginDate = BeginDate > period.BeginDate
+            var overlappingBeginDate = BeginDate > another.BeginDate
                 ? BeginDate
-                : period.BeginDate;
+                : another.BeginDate;
 
-            var overlappingEndDate = EndDate < period.EndDate
+            var overlappingEndDate = EndDate < another.EndDate
                 ? EndDate
-                : period.EndDate;
+                : another.EndDate;
 
             return DayCount(overlappingBeginDate, overlappingEndDate);
         }
