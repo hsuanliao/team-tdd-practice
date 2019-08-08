@@ -18,24 +18,24 @@ namespace BudgetTest
             return (endDate - beginDate).Days + 1;
         }
 
-        public int OverlappingDayCount(Budget currentBudget)
+        public int OverlappingDayCount(Budget budget)
         {
             DateTime effectiveBegin;
             DateTime effectiveEnd;
-            if (BeginDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
+            if (BeginDate.ToString("yyyyMM").Equals(budget.YearMonth))
             {
                 effectiveBegin = BeginDate;
-                effectiveEnd = currentBudget.LastDay();
+                effectiveEnd = budget.LastDay();
             }
-            else if (EndDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
+            else if (EndDate.ToString("yyyyMM").Equals(budget.YearMonth))
             {
-                effectiveBegin = currentBudget.FirstDay();
+                effectiveBegin = budget.FirstDay();
                 effectiveEnd = EndDate;
             }
             else
             {
-                effectiveBegin = currentBudget.FirstDay();
-                effectiveEnd = currentBudget.LastDay();
+                effectiveBegin = budget.FirstDay();
+                effectiveEnd = budget.LastDay();
             }
 
             var effectiveDays = DayCount(effectiveBegin, effectiveEnd);
