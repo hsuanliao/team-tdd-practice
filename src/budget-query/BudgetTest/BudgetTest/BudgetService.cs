@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace BudgetTest
 {
@@ -23,20 +22,10 @@ namespace BudgetTest
 
             var totalBudget = 0m;
 
-            var yearInterval = endDate.Year - beginDate.Year;
-            var monthInterval = endDate.Month - beginDate.Month;
-            var midMonthInterval = yearInterval * 12 + monthInterval + 1;
             var period = new Period(beginDate, endDate);
-            for (var i = 0; i <= midMonthInterval; i++)
+            foreach (var budget in budgets)
             {
-                var currentDate = beginDate.AddMonths(i);
-                var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentDate.ToString("yyyyMM")));
-                if (currentBudget == null)
-                {
-                    continue;
-                }
-
-                totalBudget += period.OverlappingDayCount(currentBudget) * currentBudget.DailyAmount();
+                totalBudget += budget.DailyAmount() * period.OverlappingDayCount(budget);
             }
 
             return totalBudget;
