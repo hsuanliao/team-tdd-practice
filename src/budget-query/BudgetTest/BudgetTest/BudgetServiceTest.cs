@@ -126,6 +126,21 @@ namespace BudgetTest
         }
 
         [Test]
+        public void Query_PeriodNoOverlappingAfterBudget_Return0()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2019, 2, 15), new DateTime(2019, 2, 20), 0m);
+        }
+
+        [Test]
         public void Query_PeriodNoOverlappingBeforeBudget_Return0()
         {
             _budgetRepository.GetAll().Returns(new List<Budget>
