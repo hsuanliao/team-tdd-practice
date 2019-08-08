@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BudgetTest
 {
@@ -19,16 +20,8 @@ namespace BudgetTest
             }
 
             var budgets = _budgetRepository.GetAll();
-
-            var totalBudget = 0m;
-
             var period = new Period(beginDate, endDate);
-            foreach (var budget in budgets)
-            {
-                totalBudget += budget.OverlappingAmount(period);
-            }
-
-            return totalBudget;
+            return budgets.Sum(budget => budget.OverlappingAmount(period));
         }
     }
 }
