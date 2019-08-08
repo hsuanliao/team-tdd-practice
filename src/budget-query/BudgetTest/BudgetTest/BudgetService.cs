@@ -38,18 +38,18 @@ namespace BudgetTest
             var midMonthInterval = yearInterval * 12 + monthInterval + 1;
             for (var i = 0; i <= midMonthInterval; i++)
             {
-                var currentMonth = beginDate.AddMonths(i);
-                var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentMonth.ToString("yyyyMM")));
+                var currentDate = beginDate.AddMonths(i);
+                var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentDate.ToString("yyyyMM")));
                 if (currentBudget == null)
                 {
                     continue;
                 }
 
-                if (IsSameMonth(beginDate, currentMonth))
+                if (IsSameMonth(beginDate, currentDate))
                 {
                     totalBudget += EffectiveDays(beginDate, currentBudget.LastDay()) * currentBudget.DailyAmount();
                 }
-                else if (IsSameMonth(endDate, currentMonth))
+                else if (IsSameMonth(endDate, currentDate))
                 {
                     totalBudget += EffectiveDays(currentBudget.FirstDay(), endDate) * currentBudget.DailyAmount();
                 }
