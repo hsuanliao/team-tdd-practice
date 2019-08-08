@@ -20,16 +20,6 @@ namespace BudgetTest
             }
 
             var budgets = _budgetRepository.GetAll();
-            if (IsSameMonth(beginDate, endDate))
-            {
-                var budget = budgets.FirstOrDefault(d => d.YearMonth.Equals(beginDate.ToString("yyyyMM")));
-                if (budget == null)
-                {
-                    return 0;
-                }
-
-                return Period.DayCount(beginDate, endDate) * budget.DailyAmount();
-            }
 
             var totalBudget = 0m;
 
@@ -50,11 +40,6 @@ namespace BudgetTest
             }
 
             return totalBudget;
-        }
-
-        private static bool IsSameMonth(DateTime beginDate, DateTime endDate)
-        {
-            return beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM"));
         }
     }
 }
