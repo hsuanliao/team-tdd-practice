@@ -28,7 +28,7 @@ namespace BudgetTest
                     return 0;
                 }
 
-                return EffectiveDays(beginDate, endDate) * budget.DailyAmount();
+                return DayCount(beginDate, endDate) * budget.DailyAmount();
             }
 
             var totalBudget = 0m;
@@ -63,13 +63,14 @@ namespace BudgetTest
                     effectiveEnd = currentBudget.LastDay();
                 }
 
-                totalBudget += EffectiveDays(effectiveBegin, effectiveEnd) * currentBudget.DailyAmount();
+                var effectiveDays = DayCount(effectiveBegin, effectiveEnd);
+                totalBudget += effectiveDays * currentBudget.DailyAmount();
             }
 
             return totalBudget;
         }
 
-        private static int EffectiveDays(DateTime beginDate, DateTime endDate)
+        private static int DayCount(DateTime beginDate, DateTime endDate)
         {
             return (endDate - beginDate).Days + 1;
         }
