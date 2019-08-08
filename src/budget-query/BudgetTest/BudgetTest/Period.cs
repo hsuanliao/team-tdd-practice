@@ -18,6 +18,11 @@ namespace BudgetTest
             return (endDate - beginDate).Days + 1;
         }
 
+        public bool IsInvalid()
+        {
+            return BeginDate > EndDate;
+        }
+
         public int OverlappingDayCount(Period another)
         {
             if (EndDate < another.BeginDate || BeginDate > another.EndDate)
