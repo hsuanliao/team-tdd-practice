@@ -31,5 +31,10 @@ namespace BudgetTest
         {
             return DateTime.ParseExact($"{YearMonth}{Days()}", "yyyyMMdd", null);
         }
+
+        public decimal OverlappingAmount(Period period)
+        {
+            return DailyAmount() * period.OverlappingDayCount(GetPeriod());
+        }
     }
 }
