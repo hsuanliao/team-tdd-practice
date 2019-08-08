@@ -49,18 +49,16 @@ namespace BudgetTest
                 if (IsSameMonth(beginDate, currentDate))
                 {
                     effectiveDays = EffectiveDays(beginDate, currentBudget.LastDay());
-                    totalBudget += effectiveDays * currentBudget.DailyAmount();
                 }
                 else if (IsSameMonth(endDate, currentDate))
                 {
                     effectiveDays = EffectiveDays(currentBudget.FirstDay(), endDate);
-                    totalBudget += effectiveDays * currentBudget.DailyAmount();
                 }
                 else
                 {
                     effectiveDays = EffectiveDays(currentBudget.FirstDay(), currentBudget.LastDay());
-                    totalBudget += effectiveDays * currentBudget.DailyAmount();
                 }
+                totalBudget += effectiveDays * currentBudget.DailyAmount();
             }
 
             return totalBudget;
