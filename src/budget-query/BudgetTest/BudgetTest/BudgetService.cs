@@ -14,13 +14,13 @@ namespace BudgetTest
 
         public decimal Query(DateTime beginDate, DateTime endDate)
         {
-            if (beginDate > endDate)
+            var period = new Period(beginDate, endDate);
+            if (period.BeginDate > period.EndDate)
             {
                 return 0;
             }
 
             var budgets = _budgetRepository.GetAll();
-            var period = new Period(beginDate, endDate);
             return budgets.Sum(budget => budget.OverlappingAmount(period));
         }
     }
