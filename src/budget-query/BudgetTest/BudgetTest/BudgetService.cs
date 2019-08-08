@@ -25,10 +25,15 @@ namespace BudgetTest
             var period = new Period(beginDate, endDate);
             foreach (var budget in budgets)
             {
-                totalBudget += budget.DailyAmount() * period.OverlappingDayCount(budget.GetPeriod());
+                totalBudget += OverlappingAmount(budget, period);
             }
 
             return totalBudget;
+        }
+
+        private static decimal OverlappingAmount(Budget budget, Period period)
+        {
+            return budget.DailyAmount() * period.OverlappingDayCount(budget.GetPeriod());
         }
     }
 }
