@@ -47,12 +47,12 @@ namespace BudgetTest
 
                 DateTime effectiveBegin;
                 DateTime effectiveEnd;
-                if (IsSameMonth(beginDate, currentDate))
+                if (beginDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
                 {
                     effectiveBegin = beginDate;
                     effectiveEnd = currentBudget.LastDay();
                 }
-                else if (IsSameMonth(endDate, currentDate))
+                else if (endDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
                 {
                     effectiveBegin = currentBudget.FirstDay();
                     effectiveEnd = endDate;
