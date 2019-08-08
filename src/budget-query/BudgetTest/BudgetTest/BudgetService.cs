@@ -28,7 +28,7 @@ namespace BudgetTest
                     return 0;
                 }
 
-                return DayCount(beginDate, endDate) * budget.DailyAmount();
+                return Period.DayCount(beginDate, endDate) * budget.DailyAmount();
             }
 
             var totalBudget = 0m;
@@ -45,45 +45,16 @@ namespace BudgetTest
                     continue;
                 }
 
-                var effectiveDays = OverlappingDayCount(new Period(beginDate, endDate), currentBudget);
+                var effectiveDays = new Period(beginDate, endDate).OverlappingDayCount(currentBudget);
                 totalBudget += effectiveDays * currentBudget.DailyAmount();
             }
 
             return totalBudget;
         }
 
-        private static int DayCount(DateTime beginDate, DateTime endDate)
-        {
-            return (endDate - beginDate).Days + 1;
-        }
-
         private static bool IsSameMonth(DateTime beginDate, DateTime endDate)
         {
             return beginDate.ToString("yyyyMM").Equals(endDate.ToString("yyyyMM"));
-        }
-
-        private static int OverlappingDayCount(Period period, Budget currentBudget)
-        {
-            DateTime effectiveBegin;
-            DateTime effectiveEnd;
-            if (period.BeginDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
-            {
-                effectiveBegin = period.BeginDate;
-                effectiveEnd = currentBudget.LastDay();
-            }
-            else if (period.EndDate.ToString("yyyyMM").Equals(currentBudget.YearMonth))
-            {
-                effectiveBegin = currentBudget.FirstDay();
-                effectiveEnd = period.EndDate;
-            }
-            else
-            {
-                effectiveBegin = currentBudget.FirstDay();
-                effectiveEnd = currentBudget.LastDay();
-            }
-
-            var effectiveDays = DayCount(effectiveBegin, effectiveEnd);
-            return effectiveDays;
         }
     }
 }
