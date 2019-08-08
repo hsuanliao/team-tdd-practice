@@ -13,11 +13,6 @@ namespace BudgetTest
         public DateTime BeginDate { get; private set; }
         public DateTime EndDate { get; private set; }
 
-        public static int DayCount(DateTime beginDate, DateTime endDate)
-        {
-            return (endDate - beginDate).Days + 1;
-        }
-
         public bool IsInvalid()
         {
             return BeginDate > EndDate;
@@ -39,6 +34,11 @@ namespace BudgetTest
                 : another.EndDate;
 
             return DayCount(overlappingBeginDate, overlappingEndDate);
+        }
+
+        private static int DayCount(DateTime beginDate, DateTime endDate)
+        {
+            return (endDate - beginDate).Days + 1;
         }
     }
 }
