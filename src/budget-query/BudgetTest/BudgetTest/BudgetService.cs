@@ -20,8 +20,7 @@ namespace BudgetTest
                 return 0;
             }
 
-            var budgets = _budgetRepository.GetAll();
-            return budgets.Sum(budget => budget.OverlappingAmount(period));
+            return _budgetRepository.GetAll().Sum(budget => budget.OverlappingAmount(period));
         }
     }
 }
