@@ -15,13 +15,18 @@ namespace BudgetTest
         public decimal Query(DateTime beginDate, DateTime endDate)
         {
             var period = new Period(beginDate, endDate);
-            if (period.BeginDate > period.EndDate)
+            if (IsInvalid(period))
             {
                 return 0;
             }
 
             var budgets = _budgetRepository.GetAll();
             return budgets.Sum(budget => budget.OverlappingAmount(period));
+        }
+
+        private static bool IsInvalid(Period period)
+        {
+            return period.BeginDate > period.EndDate;
         }
     }
 }
