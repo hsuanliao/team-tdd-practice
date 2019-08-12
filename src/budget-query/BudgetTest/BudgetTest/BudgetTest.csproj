@@ -71,6 +71,7 @@
     <Compile Include="BudgetService.cs" />
     <Compile Include="BudgetServiceTest.cs" />
     <Compile Include="IBudgetRepository.cs" />
+    <Compile Include="Period.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
