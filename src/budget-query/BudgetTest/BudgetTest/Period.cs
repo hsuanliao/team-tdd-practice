@@ -18,14 +18,24 @@ namespace BudgetTest
             return (endDate - beginDate).Days + 1;
         }
 
-        public int OverlappingDays(Budget currentBudget)
+        public bool IsInvalid()
         {
-            var effectiveBeginDate = BeginDate > currentBudget.FirstDay()
+            return BeginDate > EndDate;
+        }
+
+        public int OverlappingDays(Period another)
+        {
+            if (EndDate < another.BeginDate || BeginDate > another.EndDate)
+            {
+                return 0;
+            }
+
+            var effectiveBeginDate = BeginDate > another.BeginDate
                 ? BeginDate
-                : currentBudget.FirstDay();
-            var effectiveEndDate = EndDate < currentBudget.LastDay()
+                : another.BeginDate;
+            var effectiveEndDate = EndDate < another.EndDate
                 ? EndDate
-                : currentBudget.LastDay();
+                : another.EndDate;
 
             return DayCount(effectiveBeginDate, effectiveEndDate);
         }

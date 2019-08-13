@@ -22,9 +22,19 @@ namespace BudgetTest
             return DateTime.ParseExact($"{YearMonth}01", "yyyyMMdd", null);
         }
 
+        public Period GetPeriod()
+        {
+            return new Period(FirstDay(), LastDay());
+        }
+
         public DateTime LastDay()
         {
             return DateTime.ParseExact($"{YearMonth}{Days()}", "yyyyMMdd", null);
+        }
+
+        public decimal OverlappingAmount(Period period)
+        {
+            return DailyAmount() * period.OverlappingDays(GetPeriod());
         }
     }
 }
