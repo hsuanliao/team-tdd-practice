@@ -27,7 +27,7 @@ namespace BudgetTest
                 {
                     return 0;
                 }
-                return budget.DailyAmount() * EffectiveDays(beginDate, endDate);
+                return budget.DailyAmount() * Period.DayCount(beginDate, endDate);
             }
 
             var totalBudget = 0m;
@@ -39,35 +39,16 @@ namespace BudgetTest
                 var currentDate = beginDate.AddMonths(i);
 
                 var currentBudget = budgets.FirstOrDefault(d => d.YearMonth.Equals(currentDate.ToString("yyyyMM")));
-                if (currentBudget != null)
+                if (currentBudget == null)
                 {
-                    DateTime begin;
-                    DateTime end;
-                    if (i == 0)
-                    {
-                        begin = currentDate;
-                        end = currentBudget.LastDay();
-                    }
-                    else if (i == midMonthInterval)
-                    {
-                        begin = currentBudget.FirstDay();
-                        end = endDate;
-                    }
-                    else
-                    {
-                        begin = currentBudget.FirstDay();
-                        end = currentBudget.LastDay();
-                    }
-                    totalBudget += currentBudget.DailyAmount() * EffectiveDays(begin, end);
+                    continue;
                 }
+
+                var effectiveDays = new Period(beginDate, endDate).OverlappingDays(new Period(currentBudget.FirstDay(), currentBudget.LastDay()));
+                totalBudget += currentBudget.DailyAmount() * effectiveDays;
             }
 
             return totalBudget;
-        }
-
-        private static int EffectiveDays(DateTime beginDate, DateTime lastDay)
-        {
-            return (lastDay - beginDate).Days + 1;
         }
 
         private static bool IsSameMonth(DateTime beginDate, DateTime endDate)
