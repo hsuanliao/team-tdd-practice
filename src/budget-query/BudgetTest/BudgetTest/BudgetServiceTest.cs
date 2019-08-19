@@ -111,6 +111,36 @@ namespace BudgetTest
         }
 
         [Test]
+        public void Query_NoOverlappingAfterCurrentBudget_Return0()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2019, 2, 2), new DateTime(2019, 2, 15), 0m);
+        }
+
+        [Test]
+        public void Query_NoOverlappingBeforeCurrentBudget_Return0()
+        {
+            _budgetRepository.GetAll().Returns(new List<Budget>
+            {
+                new Budget
+                {
+                    YearMonth = "201901",
+                    Amount = 310m
+                }
+            });
+
+            BudgetShouldBe(new DateTime(2018, 12, 1), new DateTime(2018, 12, 15), 0m);
+        }
+
+        [Test]
         public void Query_PartialMonthRepoHasBudget_ReturnAmount()
         {
             _budgetRepository.GetAll().Returns(new List<Budget>
