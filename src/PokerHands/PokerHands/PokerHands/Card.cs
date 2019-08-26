@@ -20,5 +20,25 @@ namespace PokerHands
         public Suit Suit { get; set; }
 
         public string Number { get; set; }
+        public int NumberValue {
+            get
+            {
+                switch (Number.ToUpper())
+                {
+                    case "T":
+                        return 10;
+                    case "J":
+                        return 11;
+                    case "Q":
+                        return 12;
+                    case "K":
+                        return 13;
+                    case "A":
+                        return 14;
+                    default:
+                        return int.Parse(Number);
+                }
+            }
+        }
     }
 }
