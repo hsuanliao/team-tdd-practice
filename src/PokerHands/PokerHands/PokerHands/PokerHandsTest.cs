@@ -31,6 +31,26 @@ namespace PokerHands
             DuelResultShouldBe("4D,4S,2D,4H,4C", "9S,4C,4H,4S,4D", "Joe wins. - with four of a kind, key card 9");
         }
 
+        [Test]
+        public void S05_FourOfAKind_FullHouse_FirstWin()
+        {
+            DuelResultShouldBe("5S,5D,5C,7S,5H", "KD,8D,8S,8H,KS", "Tom wins. - with four of a kind");
+        }
+
+        [Test]
+        public void S06_FullHouse_777JJ_88822_SecondWin_KeyCard_8()
+        {
+            DuelResultShouldBe("AC,7S,7D,7H,AS", "8D,8C,8H,2S,2D", "Joe wins. - with full house, key card 8");
+        }
+
+        [Test]
+        public void S07_FullHouse_777JJ_77744_FirstWin_KeyCard_Jack()
+        {
+            DuelResultShouldBe("JC,7S,7D,7H,JS", "7D,7H,4D,4S,7S", "Tom wins. - with full house, key card Jack");
+        }
+
+
+
         [SetUp]
         public void Setup()
         {

@@ -2,6 +2,7 @@
 {
     internal enum HandCategory
     {
-        FourOfAKind
+        FullHouse,
+        FourOfAKind,
     }
 }

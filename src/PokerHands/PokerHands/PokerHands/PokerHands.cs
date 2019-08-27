@@ -11,7 +11,8 @@ namespace PokerHands
 
         private readonly Dictionary<HandCategory, string> _handCategoryLookup = new Dictionary<HandCategory, string>
         {
-            [HandCategory.FourOfAKind] = "four of a kind"
+            [HandCategory.FourOfAKind] = "four of a kind",
+            [HandCategory.FullHouse] = "full house"
         };
 
         public PokerHands(string firstPlayerName, string secondPlayerName)
@@ -31,47 +32,59 @@ namespace PokerHands
             }
             var firstHandCategory = GetHandCategory(firstCardCombo);
             var secondHandCategory = GetHandCategory(secondCardCombo);
-            if (firstHandCategory == secondHandCategory && firstHandCategory == HandCategory.FourOfAKind)
+            if (firstHandCategory == secondHandCategory)
             {
-                var firstKeyCardValues = GetKeyCardValues(firstHand);
-                var secondKeyCardValues = GetKeyCardValues(secondHand);
-                string keyCard = null;
-                string playerName = null;
-                for (int i = 0; i < firstKeyCardValues.Count; i++)
-                {
-                    if (firstKeyCardValues[i] != secondKeyCardValues[i])
-                    {
-                        var winsKeyCardValue = firstKeyCardValues[i] > secondKeyCardValues[i] ? firstKeyCardValues[i] : secondKeyCardValues[i];
-                        playerName = firstKeyCardValues[i] > secondKeyCardValues[i]? _firstPlayerName : _secondPlayerName;
-                        switch (winsKeyCardValue)
-                        {
-                            case 10:
-                                keyCard = "T";
-                                break;
-                            case 11:
-                                keyCard = "J";
-                                break;
-                            case 12:
-                                keyCard = "Q";
-                                break;
-                            case 13:
-                                keyCard = "K";
-                                break;
-                            case 14:
-                                keyCard = "A";
-                                break;
-                            default:
-                                keyCard = winsKeyCardValue.ToString();
-                                break;
-                        }
-
-                        break;
-                    }
-                }
+                var compareResult = CompareSameHandCategory(firstHand, secondHand, out var keyCard);
+                var playerName = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
                 return $"{playerName} wins. - with {_handCategoryLookup[firstHandCategory]}, key card {keyCard}";
             }
 
+            var winner = firstHandCategory > secondHandCategory ? _firstPlayerName : _secondPlayerName;
+            var winnerHandCategory = firstHandCategory > secondHandCategory ? firstHandCategory : secondHandCategory;
+            return $"{winner} wins. - with {_handCategoryLookup[winnerHandCategory]}";
+
             throw new NotImplementedException();
+        }
+
+        private static int CompareSameHandCategory(string firstHand, string secondHand, out string keyCard)
+        {
+            keyCard = string.Empty;
+            int compareResult = 0;
+            var firstKeyCardValues = GetKeyCardValues(firstHand);
+            var secondKeyCardValues = GetKeyCardValues(secondHand);
+            for (int i = 0; i < firstKeyCardValues.Count; i++)
+            {
+                if (firstKeyCardValues[i] != secondKeyCardValues[i])
+                {
+                    compareResult = firstKeyCardValues[i] > secondKeyCardValues[i] ? 1 : -1;
+                    var winsKeyCardValue = compareResult > 0 ? firstKeyCardValues[i] : secondKeyCardValues[i];
+                    switch (winsKeyCardValue)
+                    {
+                        case 10:
+                            keyCard = "T";
+                            break;
+                        case 11:
+                            keyCard = "Jack";
+                            break;
+                        case 12:
+                            keyCard = "Q";
+                            break;
+                        case 13:
+                            keyCard = "K";
+                            break;
+                        case 14:
+                            keyCard = "A";
+                            break;
+                        default:
+                            keyCard = winsKeyCardValue.ToString();
+                            break;
+                    }
+
+                    break;
+                }
+            }
+
+            return compareResult;
         }
 
         private static IList<int> GetKeyCardValues(string firstHand)
@@ -98,6 +111,11 @@ namespace PokerHands
             if (groups.Count == 2 && groups.Any(t => t.Count() == 4))
             {
                 return HandCategory.FourOfAKind;
+            }
+
+            if (groups.Count == 2 && groups.Any(t => t.Count() == 3) && groups.Any(t => t.Count() == 2))
+            {
+                return HandCategory.FullHouse;
             }
 
             throw new NotImplementedException();
