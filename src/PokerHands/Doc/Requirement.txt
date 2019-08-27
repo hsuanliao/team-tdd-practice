@@ -2,6 +2,7 @@ http://codingdojo.org/kata/PokerHands/
 https://zh.wikipedia.org/wiki/%E6%92%B2%E5%85%8B%E7%89%8C%E5%9E%8B
 
 Requirement:
+* 每人手中都有一副牌, 取得5張出來比較大小
 * 先比牌型，再比點數 => 牌型 -> 點數
 * 牌型大小 => 同花順(Straight flush) > 
               四條(Four of a kind) > 
