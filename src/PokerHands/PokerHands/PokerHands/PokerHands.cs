@@ -12,7 +12,9 @@ namespace PokerHands
         private readonly Dictionary<HandCategory, string> _handCategoryLookup = new Dictionary<HandCategory, string>
         {
             [HandCategory.FourOfAKind] = "four of a kind",
-            [HandCategory.FullHouse] = "full house"
+            [HandCategory.FullHouse] = "full house",
+            [HandCategory.ThreeOfAKind] = "three of a kind",
+            [HandCategory.TwoPairs] = "two pairs"
         };
 
         public PokerHands(string firstPlayerName, string secondPlayerName)
@@ -73,7 +75,7 @@ namespace PokerHands
                             keyCard = "K";
                             break;
                         case 14:
-                            keyCard = "A";
+                            keyCard = "Ace";
                             break;
                         default:
                             keyCard = winsKeyCardValue.ToString();
@@ -116,6 +118,15 @@ namespace PokerHands
             if (groups.Count == 2 && groups.Any(t => t.Count() == 3) && groups.Any(t => t.Count() == 2))
             {
                 return HandCategory.FullHouse;
+            }
+
+            if (groups.Count == 3 && groups.Any(t => t.Count() == 3))
+            {
+                return HandCategory.ThreeOfAKind;
+            }
+            if (groups.Count == 3 && groups.Count(t => t.Count() == 2) == 2)
+            {
+                return HandCategory.TwoPairs;
             }
 
             throw new NotImplementedException();

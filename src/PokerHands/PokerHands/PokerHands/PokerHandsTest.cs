@@ -49,7 +49,34 @@ namespace PokerHands
             DuelResultShouldBe("JC,7S,7D,7H,JS", "7D,7H,4D,4S,7S", "Tom wins. - with full house, key card Jack");
         }
 
+        [Test]
+        public void S08_FullHouse_ThreeOfAKind_SecondWin()
+        {
+            DuelResultShouldBe("4H,4S,4D,2C,5S", "2D,4S,2S,4D,4H", "Joe wins. - with full house");
+        }
 
+        [Test]
+        public void S09_ThreeOfAKind_3332A_44425_SecondWin_KeyCard_4()
+        {
+            DuelResultShouldBe("3C,3D,3H,AC,2S", "4H,4D,4S,2C,5S", "Joe wins. - with three of a kind, key card 4");
+        }
+
+        [Test]
+        public void S10_ThreeOfAKind_3332A_33324_FirstWin_KeyCard_Ace()
+        {
+            DuelResultShouldBe("3C,3D,3H,AC,2S", "3C,3D,3H,2D,4S", "Tom wins. - with three of a kind, key card Ace");
+        }
+
+        [Test]
+        public void S11_ThreeOfAKind_3335A_3332A_FirstWin_KeyCard_5()
+        {
+            DuelResultShouldBe("3C,3D,3H,AC,5S", "3C,3D,3H,AC,2S", "Tom wins. - with three of a kind, key card 5");
+        }
+        [Test]
+        public void S12_ThreeOfAKind_TwoPairs_FirstWin()
+        {
+            DuelResultShouldBe("3D,AC,3C,5S,3H", "KS,KC,2S,5D,2H", "Tom wins. - with three of a kind");
+        }
 
         [SetUp]
         public void Setup()
