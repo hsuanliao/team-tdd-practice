@@ -4,6 +4,7 @@
     {
         TwoPairs,
         ThreeOfAKind,
+        Straight,
         FullHouse,
         FourOfAKind,
     }

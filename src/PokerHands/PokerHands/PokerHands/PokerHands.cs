@@ -14,7 +14,8 @@ namespace PokerHands
             [HandCategory.FourOfAKind] = "four of a kind",
             [HandCategory.FullHouse] = "full house",
             [HandCategory.ThreeOfAKind] = "three of a kind",
-            [HandCategory.TwoPairs] = "two pairs"
+            [HandCategory.TwoPairs] = "two pairs",
+            [HandCategory.Straight] = "straight"
         };
 
         public PokerHands(string firstPlayerName, string secondPlayerName)
@@ -32,8 +33,8 @@ namespace PokerHands
             {
                 return "Tie";
             }
-            var firstHandCategory = GetHandCategory(firstCardCombo);
-            var secondHandCategory = GetHandCategory(secondCardCombo);
+            var firstHandCategory = GetHandCategory(firstHand);
+            var secondHandCategory = GetHandCategory(secondHand);
             if (firstHandCategory == secondHandCategory)
             {
                 var compareResult = CompareSameHandCategory(firstHand, secondHand, out var keyCard);
@@ -72,7 +73,7 @@ namespace PokerHands
                             keyCard = "Q";
                             break;
                         case 13:
-                            keyCard = "K";
+                            keyCard = "King";
                             break;
                         case 14:
                             keyCard = "Ace";
@@ -107,9 +108,9 @@ namespace PokerHands
             return firstKeyCardValues;
         }
 
-        private HandCategory GetHandCategory(IList<string> cardCombo)
+        private HandCategory GetHandCategory(string hand)
         {
-            var groups = cardCombo.GroupBy(t => t).ToList();
+            var groups = GetCardCombo(hand).GroupBy(t => t).ToList();
             if (groups.Count == 2 && groups.Any(t => t.Count() == 4))
             {
                 return HandCategory.FourOfAKind;
@@ -127,6 +128,16 @@ namespace PokerHands
             if (groups.Count == 3 && groups.Count(t => t.Count() == 2) == 2)
             {
                 return HandCategory.TwoPairs;
+            }
+            // TD,JS,QH,KD,AS => 10,11,12,13,14
+            var cardValueCombo = hand
+                .Split(',')
+                .Select(t => new Card(t).NumberValue)
+                .OrderBy(o => o)
+                .ToList();
+            if (groups.Count == 5 && (cardValueCombo.Last() - cardValueCombo.First() == 4 || cardValueCombo.Last() - cardValueCombo[3] == 9))
+            {
+                return HandCategory.Straight;
             }
 
             throw new NotImplementedException();

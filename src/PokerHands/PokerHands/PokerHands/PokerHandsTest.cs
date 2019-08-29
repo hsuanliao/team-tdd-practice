@@ -78,6 +78,36 @@ namespace PokerHands
             DuelResultShouldBe("3D,AC,3C,5S,3H", "KS,KC,2S,5D,2H", "Tom wins. - with three of a kind");
         }
 
+        [Test]
+        public void S13_TwoPairs_22JJ5_55883_FirstWin_KeyCard_Jack()
+        {
+            DuelResultShouldBe("5C,JS,JH,2S,2C", "8S,8C,5D,5S,3S", "Tom wins. - with two pairs, key card Jack");
+        }
+
+        [Test]
+        public void S14_TwoPairs_22JJ5_55JJ3_SecondWin_KeyCard_5()
+        {
+            DuelResultShouldBe("5C,JS,JH,2S,2C", "5C,JD,JS,5D,3H", "Joe wins. - with two pairs, key card 5");
+        }
+
+        [Test]
+        public void S15_TwoPairs_55JJA_55JJ3_FirstWin_KeyCard_Ace()
+        {
+            DuelResultShouldBe("5D,5S,AD,JS,JD", "5C,JD,JS,5D,3H", "Tom wins. - with two pairs, key card Ace");
+        }
+
+        [Test]
+        public void S16_Straight_ThreeOfAKind_FirstWin()
+        {
+            DuelResultShouldBe("TD,JS,QH,KD,AS", "4H,4S,4D,2C,5S", "Tom wins. - with straight");
+        }
+
+        [Test]
+        public void S17_Straight_TJQKA_A2345_FirstWin_KeyCard_King()
+        {
+            DuelResultShouldBe("TD,JS,QH,KD,AS", "2D,5S,4C,3C,AC", "Tom wins. - with straight, key card King");
+        }
+
         [SetUp]
         public void Setup()
         {
