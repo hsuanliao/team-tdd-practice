@@ -55,6 +55,15 @@ namespace PokerHands
             int compareResult = 0;
             var firstKeyCardValues = GetKeyCardValues(firstHand);
             var secondKeyCardValues = GetKeyCardValues(secondHand);
+
+            // 判斷兩手牌, 是否同時為順子, 且一手牌為 TJQKA, 一手牌為 A2345
+            // 若是KeyCard比較時.不比較A
+            if (firstKeyCardValues.Union(secondKeyCardValues).Count(v => v == 14 || v == 1) == 2)
+            {
+                firstKeyCardValues = firstKeyCardValues.Except(new[] {1, 14}).ToList();
+                secondKeyCardValues = secondKeyCardValues.Except(new[] {1, 14}).ToList();
+            }
+
             for (int i = 0; i < firstKeyCardValues.Count; i++)
             {
                 if (firstKeyCardValues[i] != secondKeyCardValues[i])
@@ -90,9 +99,9 @@ namespace PokerHands
             return compareResult;
         }
 
-        private static IList<int> GetKeyCardValues(string firstHand)
+        private static IList<int> GetKeyCardValues(string hand)
         {
-            var firstKeyCardValues = firstHand
+            var keyCardValues = hand
                 .Split(',')
                 .Select(t => new Card(t).NumberValue)
                 .GroupBy(t => t)
@@ -105,10 +114,18 @@ namespace PokerHands
                 .ThenByDescending(t => t.KeyCardValue)
                 .Select(k =>k.KeyCardValue)
                 .ToList();
-            return firstKeyCardValues;
+
+            // HandCategory.Straight: 12345
+            if (keyCardValues.Count == 5 && keyCardValues[0] - keyCardValues[1] == 9)
+            {
+                keyCardValues[0] = 1;
+                keyCardValues = keyCardValues.OrderByDescending(o => o).ToList();
+            }
+
+            return keyCardValues;
         }
 
-        private HandCategory GetHandCategory(string hand)
+        private static HandCategory GetHandCategory(string hand)
         {
             var groups = GetCardCombo(hand).GroupBy(t => t).ToList();
             if (groups.Count == 2 && groups.Any(t => t.Count() == 4))

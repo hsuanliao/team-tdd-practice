@@ -108,6 +108,19 @@ namespace PokerHands
             DuelResultShouldBe("TD,JS,QH,KD,AS", "2D,5S,4C,3C,AC", "Tom wins. - with straight, key card King");
         }
 
+        [Test]
+        public void S18_Straight_TJQKA_45678_FirstWin_KeyCard_Ace()
+        {
+            DuelResultShouldBe("TD,JS,QH,KD,AS", "8D,6S,4S,5C,7D", "Tom wins. - with straight, key card Ace");
+        }
+
+        [Test]
+        public void S19_Straight_A2345_45678_SecondWin_KeyCard_8()
+        {
+            DuelResultShouldBe("2D,5S,4C,3C,AC", "8D,6S,4S,5C,7D", "Joe wins. - with straight, key card 8");
+        }
+
+
         [SetUp]
         public void Setup()
         {
