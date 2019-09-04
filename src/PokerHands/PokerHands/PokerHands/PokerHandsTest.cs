@@ -120,6 +120,23 @@ namespace PokerHands
             DuelResultShouldBe("2D,5S,4C,3C,AC", "8D,6S,4S,5C,7D", "Joe wins. - with straight, key card 8");
         }
 
+        [Test]
+        public void S20_Flush_Straight_FirstWin()
+        {
+            DuelResultShouldBe("4D,6D,8D,2D,AD", "TC,8D,QS,9S,JS", "Tom wins. - with flush");
+        }
+
+        [Test]
+        public void S21_Flush_259QA_35TJA_FirstWin_KeyCard_Queen()
+        {
+            DuelResultShouldBe("2S,9S,QS,5S,AS", "3H,5H,AH,TH,JH", "Tom wins. - with flush, key card Queen");
+        }
+
+        [Test]
+        public void S22_Flush_StraightFlush_SecondWin()
+        {
+            DuelResultShouldBe("2C,6C,8C,4C,TC", "3C,4C,5C,6C,7C", "Joe wins. - with straight flush");
+        }
 
         [SetUp]
         public void Setup()

@@ -15,7 +15,9 @@ namespace PokerHands
             [HandCategory.FullHouse] = "full house",
             [HandCategory.ThreeOfAKind] = "three of a kind",
             [HandCategory.TwoPairs] = "two pairs",
-            [HandCategory.Straight] = "straight"
+            [HandCategory.Straight] = "straight",
+            [HandCategory.Flush] = "flush",
+            [HandCategory.StraightFlush] = "straight flush"
         };
 
         public PokerHands(string firstPlayerName, string secondPlayerName)
@@ -60,8 +62,8 @@ namespace PokerHands
             // 若是KeyCard比較時.不比較A
             if (firstKeyCardValues.Union(secondKeyCardValues).Count(v => v == 14 || v == 1) == 2)
             {
-                firstKeyCardValues = firstKeyCardValues.Except(new[] {1, 14}).ToList();
-                secondKeyCardValues = secondKeyCardValues.Except(new[] {1, 14}).ToList();
+                firstKeyCardValues = firstKeyCardValues.Except(new[] { 1, 14 }).ToList();
+                secondKeyCardValues = secondKeyCardValues.Except(new[] { 1, 14 }).ToList();
             }
 
             for (int i = 0; i < firstKeyCardValues.Count; i++)
@@ -75,18 +77,23 @@ namespace PokerHands
                         case 10:
                             keyCard = "T";
                             break;
+
                         case 11:
                             keyCard = "Jack";
                             break;
+
                         case 12:
-                            keyCard = "Q";
+                            keyCard = "Queen";
                             break;
+
                         case 13:
                             keyCard = "King";
                             break;
+
                         case 14:
                             keyCard = "Ace";
                             break;
+
                         default:
                             keyCard = winsKeyCardValue.ToString();
                             break;
@@ -112,7 +119,7 @@ namespace PokerHands
                 })
                 .OrderByDescending(o => o.Count)
                 .ThenByDescending(t => t.KeyCardValue)
-                .Select(k =>k.KeyCardValue)
+                .Select(k => k.KeyCardValue)
                 .ToList();
 
             // HandCategory.Straight: 12345
@@ -146,6 +153,14 @@ namespace PokerHands
             {
                 return HandCategory.TwoPairs;
             }
+
+            var suitCombo = hand
+                .Split(',')
+                .Select(t => new Card(t).Suit)
+                .GroupBy(s => s)
+                .ToList();
+            var isFlush = suitCombo.Count() == 1;
+
             // TD,JS,QH,KD,AS => 10,11,12,13,14
             var cardValueCombo = hand
                 .Split(',')
@@ -154,7 +169,16 @@ namespace PokerHands
                 .ToList();
             if (groups.Count == 5 && (cardValueCombo.Last() - cardValueCombo.First() == 4 || cardValueCombo.Last() - cardValueCombo[3] == 9))
             {
+                if (isFlush)
+                {
+                    return HandCategory.StraightFlush;
+                }
                 return HandCategory.Straight;
+            }
+
+            if (isFlush)
+            {
+                return HandCategory.Flush;
             }
 
             throw new NotImplementedException();
