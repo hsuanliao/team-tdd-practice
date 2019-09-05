@@ -2,6 +2,8 @@
 {
     internal enum HandCategory
     {
+        HighCard,
+        Pair,
         TwoPairs,
         ThreeOfAKind,
         Straight,

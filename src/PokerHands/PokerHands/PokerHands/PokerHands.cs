@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace PokerHands
@@ -17,7 +16,9 @@ namespace PokerHands
             [HandCategory.TwoPairs] = "two pairs",
             [HandCategory.Straight] = "straight",
             [HandCategory.Flush] = "flush",
-            [HandCategory.StraightFlush] = "straight flush"
+            [HandCategory.StraightFlush] = "straight flush",
+            [HandCategory.Pair] = "pair",
+            [HandCategory.HighCard] = "high card"
         };
 
         public PokerHands(string firstPlayerName, string secondPlayerName)
@@ -28,18 +29,15 @@ namespace PokerHands
 
         public string Duel(string firstHand, string secondHand)
         {
-            var firstCardCombo = GetCardCombo(firstHand);
-            var secondCardCombo = GetCardCombo(secondHand);
-
-            if (string.Join(",", firstCardCombo) == string.Join(",", secondCardCombo))
-            {
-                return "Tie";
-            }
             var firstHandCategory = GetHandCategory(firstHand);
             var secondHandCategory = GetHandCategory(secondHand);
             if (firstHandCategory == secondHandCategory)
             {
                 var compareResult = CompareSameHandCategory(firstHand, secondHand, out var keyCard);
+                if (compareResult == 0)
+                {
+                    return "Tie";
+                }
                 var playerName = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
                 return $"{playerName} wins. - with {_handCategoryLookup[firstHandCategory]}, key card {keyCard}";
             }
@@ -47,8 +45,6 @@ namespace PokerHands
             var winner = firstHandCategory > secondHandCategory ? _firstPlayerName : _secondPlayerName;
             var winnerHandCategory = firstHandCategory > secondHandCategory ? firstHandCategory : secondHandCategory;
             return $"{winner} wins. - with {_handCategoryLookup[winnerHandCategory]}";
-
-            throw new NotImplementedException();
         }
 
         private static int CompareSameHandCategory(string firstHand, string secondHand, out string keyCard)
@@ -75,7 +71,7 @@ namespace PokerHands
                     switch (winsKeyCardValue)
                     {
                         case 10:
-                            keyCard = "T";
+                            keyCard = "Ten";
                             break;
 
                         case 11:
@@ -153,6 +149,10 @@ namespace PokerHands
             {
                 return HandCategory.TwoPairs;
             }
+            if (groups.Count == 4 && groups.Count(t => t.Count() == 2) == 1)
+            {
+                return HandCategory.Pair;
+            }
 
             var suitCombo = hand
                 .Split(',')
@@ -181,7 +181,7 @@ namespace PokerHands
                 return HandCategory.Flush;
             }
 
-            throw new NotImplementedException();
+            return HandCategory.HighCard;
         }
 
         private static IList<string> GetCardCombo(string firstHand)

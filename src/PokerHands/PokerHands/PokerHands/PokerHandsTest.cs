@@ -138,6 +138,49 @@ namespace PokerHands
             DuelResultShouldBe("2C,6C,8C,4C,TC", "3C,4C,5C,6C,7C", "Joe wins. - with straight flush");
         }
 
+        [Test]
+        public void S23_Pair_TwoPairs_SecondWin()
+        {
+            DuelResultShouldBe("5S,JH,6S,JC,AS", "5D,7D,6S,6C,5H", "Joe wins. - with two pairs");
+        }
+
+        [Test]
+        public void S24_HighCard_Pair_SecondWin()
+        {
+            DuelResultShouldBe("JD,7D,KS,6S,3C", "KD,AS,4C,AH,6D", "Joe wins. - with pair");
+        }
+
+        [Test]
+        public void S25_HighCard_3479K_248TK_SecondWin_KeyCard_Ten()
+        {
+            DuelResultShouldBe("KS,7D,3C,9H,4D", "2D,4S,KD,TS,8S", "Joe wins. - with high card, key card Ten");
+        }
+
+        [Test]
+        public void S26_Flush_HighCard_SamePoint_FirstWin()
+        {
+            DuelResultShouldBe("2C,6C,8C,4C,TC", "TC,8D,4H,6S,2C", "Tom wins. - with flush");
+        }
+
+        [Test]
+        public void S27_HighCard_367JA_367JA_Tie()
+        {
+            DuelResultShouldBe("JD,7D,AS,6S,3C", "AS,JD,7D,3C,6S", "Tie");
+        }
+
+        [Test]
+        public void S28_StraightFlush_FourOfAKind_FirstWin()
+        {
+            DuelResultShouldBe("3D,5D,7D,4D,6D", "AS,AH,AD,AC,KD", "Tom wins. - with straight flush");
+        }
+
+        [Test]
+        public void S29_Flush_FullHouse_SecondWin()
+        {
+            DuelResultShouldBe("8S,4S,TS,KS,AS", "2D,4S,2S,4D,4H", "Joe wins. - with full house");
+        }
+
+
         [SetUp]
         public void Setup()
         {
