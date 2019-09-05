@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Card.cs" />
+    <Compile Include="Hand.cs" />
     <Compile Include="HandCategory.cs" />
     <Compile Include="PokerHands.cs" />
     <Compile Include="PokerHandsTest.cs" />

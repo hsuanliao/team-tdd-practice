@@ -29,8 +29,8 @@ namespace PokerHands
 
         public string Duel(string firstHand, string secondHand)
         {
-            var firstHandCategory = GetHandCategory(firstHand);
-            var secondHandCategory = GetHandCategory(secondHand);
+            var firstHandCategory = new Hand(firstHand).Category;
+            var secondHandCategory = new Hand(secondHand).Category;
             if (firstHandCategory == secondHandCategory)
             {
                 var compareResult = CompareSameHandCategory(firstHand, secondHand, out var keyCard);
@@ -126,67 +126,6 @@ namespace PokerHands
             }
 
             return keyCardValues;
-        }
-
-        private static HandCategory GetHandCategory(string hand)
-        {
-            var groups = GetCardCombo(hand).GroupBy(t => t).ToList();
-            if (groups.Count == 2 && groups.Any(t => t.Count() == 4))
-            {
-                return HandCategory.FourOfAKind;
-            }
-
-            if (groups.Count == 2 && groups.Any(t => t.Count() == 3) && groups.Any(t => t.Count() == 2))
-            {
-                return HandCategory.FullHouse;
-            }
-
-            if (groups.Count == 3 && groups.Any(t => t.Count() == 3))
-            {
-                return HandCategory.ThreeOfAKind;
-            }
-            if (groups.Count == 3 && groups.Count(t => t.Count() == 2) == 2)
-            {
-                return HandCategory.TwoPairs;
-            }
-            if (groups.Count == 4 && groups.Count(t => t.Count() == 2) == 1)
-            {
-                return HandCategory.Pair;
-            }
-
-            var suitCombo = hand
-                .Split(',')
-                .Select(t => new Card(t).Suit)
-                .GroupBy(s => s)
-                .ToList();
-            var isFlush = suitCombo.Count() == 1;
-
-            // TD,JS,QH,KD,AS => 10,11,12,13,14
-            var cardValueCombo = hand
-                .Split(',')
-                .Select(t => new Card(t).NumberValue)
-                .OrderBy(o => o)
-                .ToList();
-            if (groups.Count == 5 && (cardValueCombo.Last() - cardValueCombo.First() == 4 || cardValueCombo.Last() - cardValueCombo[3] == 9))
-            {
-                if (isFlush)
-                {
-                    return HandCategory.StraightFlush;
-                }
-                return HandCategory.Straight;
-            }
-
-            if (isFlush)
-            {
-                return HandCategory.Flush;
-            }
-
-            return HandCategory.HighCard;
-        }
-
-        private static IList<string> GetCardCombo(string firstHand)
-        {
-            return firstHand.Split(',').Select(t => new Card(t).Number).OrderBy(t => t).ToList();
         }
     }
 }
