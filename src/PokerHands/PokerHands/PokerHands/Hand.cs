@@ -17,7 +17,7 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            if (GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 4))
+            if (Match())
             {
                 return HandCategory.FourOfAKind;
             }
@@ -70,6 +70,11 @@ namespace PokerHands
             }
 
             return HandCategory.HighCard;
+        }
+
+        private bool Match()
+        {
+            return GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 4);
         }
 
         private List<IGrouping<string, Card>> GetCardNumberGroups()
