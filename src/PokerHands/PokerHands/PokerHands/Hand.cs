@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PokerHands.HandCategories;
 
 namespace PokerHands
 {
@@ -74,7 +75,8 @@ namespace PokerHands
 
         private bool Match()
         {
-            var cardNumberGroups = Cards.GroupBy(t => t.Number).ToList();
+            var rule = new FourOfAKindRule(Cards);
+            var cardNumberGroups = rule.Cards.GroupBy(t => t.Number).ToList();
             return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4);
         }
 
