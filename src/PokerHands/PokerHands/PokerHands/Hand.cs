@@ -17,28 +17,27 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            var cardNumberGroups = GetCardNumberGroups();
-            if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4))
+            if (GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 4))
             {
                 return HandCategory.FourOfAKind;
             }
 
-            if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 3) && cardNumberGroups.Any(t => t.Count() == 2))
+            if (GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 3) && GetCardNumberGroups().Any(t => t.Count() == 2))
             {
                 return HandCategory.FullHouse;
             }
 
-            if (cardNumberGroups.Count == 3 && cardNumberGroups.Any(t => t.Count() == 3))
+            if (GetCardNumberGroups().Count == 3 && GetCardNumberGroups().Any(t => t.Count() == 3))
             {
                 return HandCategory.ThreeOfAKind;
             }
 
-            if (cardNumberGroups.Count == 3 && cardNumberGroups.Count(t => t.Count() == 2) == 2)
+            if (GetCardNumberGroups().Count == 3 && GetCardNumberGroups().Count(t => t.Count() == 2) == 2)
             {
                 return HandCategory.TwoPairs;
             }
 
-            if (cardNumberGroups.Count == 4 && cardNumberGroups.Count(t => t.Count() == 2) == 1)
+            if (GetCardNumberGroups().Count == 4 && GetCardNumberGroups().Count(t => t.Count() == 2) == 1)
             {
                 return HandCategory.Pair;
             }
@@ -54,7 +53,7 @@ namespace PokerHands
                 .Select(t => t.NumberValue)
                 .OrderBy(o => o)
                 .ToList();
-            if (cardNumberGroups.Count == 5 && (cardNumberValueGroup.Last() - cardNumberValueGroup.First() == 4 ||
+            if (GetCardNumberGroups().Count == 5 && (cardNumberValueGroup.Last() - cardNumberValueGroup.First() == 4 ||
                                       cardNumberValueGroup.Last() - cardNumberValueGroup[3] == 9))
             {
                 if (isFlush)
