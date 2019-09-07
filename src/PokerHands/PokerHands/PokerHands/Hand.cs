@@ -18,9 +18,7 @@ namespace PokerHands
         private HandCategory GetCategory()
         {
             var cardNumberGroups = Cards
-                .Select(t => t.Number)
-                .OrderBy(t => t)
-                .GroupBy(t => t)
+                .GroupBy(t => t.Number)
                 .ToList();
             if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4))
             {
