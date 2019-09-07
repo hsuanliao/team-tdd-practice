@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PokerHands.HandCategories
 {
-    internal class FourOfAKindRule
+    internal class FourOfAKindRule : IHandCategoryRule
     {
         private readonly IList<Card> _cards;
 
