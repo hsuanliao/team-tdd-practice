@@ -74,7 +74,8 @@ namespace PokerHands
 
         private bool Match()
         {
-            return GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 4);
+            var cardNumberGroups = Cards.GroupBy(t => t.Number).ToList();
+            return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4);
         }
 
         private List<IGrouping<string, Card>> GetCardNumberGroups()
