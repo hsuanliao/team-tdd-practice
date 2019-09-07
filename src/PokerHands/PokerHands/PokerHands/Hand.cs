@@ -17,9 +17,7 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            var cardNumberGroups = Cards
-                .GroupBy(t => t.Number)
-                .ToList();
+            var cardNumberGroups = GetCardNumberGroups();
             if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4))
             {
                 return HandCategory.FourOfAKind;
@@ -73,6 +71,12 @@ namespace PokerHands
             }
 
             return HandCategory.HighCard;
+        }
+
+        private List<IGrouping<string, Card>> GetCardNumberGroups()
+        {
+            var cardNumberGroups = Cards.GroupBy(t => t.Number).ToList();
+            return cardNumberGroups;
         }
 
         public IList<Card> Cards { get; set; }
