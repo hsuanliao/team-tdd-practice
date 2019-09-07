@@ -5,17 +5,18 @@ namespace PokerHands.HandCategories
 {
     internal class FourOfAKindRule
     {
-        public IList<Card> Cards { get; }
+        private readonly IList<Card> _cards;
+
         public HandCategory HandCategory => HandCategory.FourOfAKind;
 
         public FourOfAKindRule(IList<Card> cards)
         {
-            Cards = cards;
+            _cards = cards;
         }
 
         public bool Match()
         {
-            var cardNumberGroups = Cards.GroupBy(t => t.Number).ToList();
+            var cardNumberGroups = _cards.GroupBy(t => t.Number).ToList();
             return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4);
         }
     }
