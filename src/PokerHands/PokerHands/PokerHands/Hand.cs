@@ -18,18 +18,28 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            IHandCategoryRule rule;
-            rule = new FourOfAKindRule(Cards);
-            if (rule.Match())
+            var categoryRules = new List<IHandCategoryRule>
+            {
+                new FourOfAKindRule(Cards),
+                new FullHouseRule(Cards)
+            };
+            var rule = categoryRules.FirstOrDefault(r => r.Match());
+            if (rule != null)
             {
                 return rule.HandCategory;
             }
+            //IHandCategoryRule rule;
+            //rule = new FourOfAKindRule(Cards);
+            //if (rule.Match())
+            //{
+            //    return rule.HandCategory;
+            //}
 
-            rule = new FullHouseRule(Cards);
-            if (rule.Match())
-            {
-                return rule.HandCategory;
-            }
+            //rule = new FullHouseRule(Cards);
+            //if (rule.Match())
+            //{
+            //    return rule.HandCategory;
+            //}
 
             if (GetCardNumberGroups().Count == 3 && GetCardNumberGroups().Any(t => t.Count() == 3))
             {
