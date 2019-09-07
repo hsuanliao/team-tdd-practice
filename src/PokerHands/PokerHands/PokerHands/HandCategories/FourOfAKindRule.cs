@@ -6,6 +6,7 @@ namespace PokerHands.HandCategories
     internal class FourOfAKindRule
     {
         public IList<Card> Cards { get; }
+        public HandCategory HandCategory => HandCategory.FourOfAKind;
 
         public FourOfAKindRule(IList<Card> cards)
         {

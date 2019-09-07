@@ -18,9 +18,10 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            if (new FourOfAKindRule(Cards).Match())
+            var rule = new FourOfAKindRule(Cards);
+            if (rule.Match())
             {
-                return HandCategory.FourOfAKind;
+                return rule.HandCategory;
             }
 
             if (GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 3) && GetCardNumberGroups().Any(t => t.Count() == 2))
