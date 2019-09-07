@@ -18,7 +18,7 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            if (Match(new FourOfAKindRule(Cards)))
+            if (new FourOfAKindRule(Cards).Match())
             {
                 return HandCategory.FourOfAKind;
             }
@@ -71,12 +71,6 @@ namespace PokerHands
             }
 
             return HandCategory.HighCard;
-        }
-
-        private bool Match(FourOfAKindRule rule)
-        {
-            var cardNumberGroups = rule.Cards.GroupBy(t => t.Number).ToList();
-            return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4);
         }
 
         private List<IGrouping<string, Card>> GetCardNumberGroups()

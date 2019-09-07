@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PokerHands.HandCategories
 {
@@ -9,6 +10,12 @@ namespace PokerHands.HandCategories
         public FourOfAKindRule(IList<Card> cards)
         {
             Cards = cards;
+        }
+
+        public bool Match()
+        {
+            var cardNumberGroups = Cards.GroupBy(t => t.Number).ToList();
+            return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4);
         }
     }
 }
