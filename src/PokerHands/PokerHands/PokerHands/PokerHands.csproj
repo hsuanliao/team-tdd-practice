@@ -70,6 +70,7 @@
     <Compile Include="Card.cs" />
     <Compile Include="Hand.cs" />
     <Compile Include="HandCategories\FourOfAKindRule.cs" />
+    <Compile Include="HandCategories\FullHouseRule.cs" />
     <Compile Include="HandCategories\IHandCategoryRule.cs" />
     <Compile Include="HandCategory.cs" />
     <Compile Include="PokerHands.cs" />

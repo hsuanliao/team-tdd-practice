@@ -24,9 +24,10 @@ namespace PokerHands
                 return rule.HandCategory;
             }
 
-            if (GetCardNumberGroups().Count == 2 && GetCardNumberGroups().Any(t => t.Count() == 3) && GetCardNumberGroups().Any(t => t.Count() == 2))
+            var rule2 = new FullHouseRule(Cards);
+            if (rule2.Match())
             {
-                return HandCategory.FullHouse;
+                return rule2.HandCategory;
             }
 
             if (GetCardNumberGroups().Count == 3 && GetCardNumberGroups().Any(t => t.Count() == 3))
