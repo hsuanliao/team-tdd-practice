@@ -20,26 +20,14 @@ namespace PokerHands
         {
             var categoryRules = new List<IHandCategoryRule>
             {
-                new FourOfAKindRule(Cards),
-                new FullHouseRule(Cards)
+                new FourOfAKindRule(),
+                new FullHouseRule()
             };
-            var rule = categoryRules.FirstOrDefault(r => r.Match());
+            var rule = categoryRules.FirstOrDefault(r => r.Match(Cards));
             if (rule != null)
             {
                 return rule.HandCategory;
             }
-            //IHandCategoryRule rule;
-            //rule = new FourOfAKindRule(Cards);
-            //if (rule.Match())
-            //{
-            //    return rule.HandCategory;
-            //}
-
-            //rule = new FullHouseRule(Cards);
-            //if (rule.Match())
-            //{
-            //    return rule.HandCategory;
-            //}
 
             if (GetCardNumberGroups().Count == 3 && GetCardNumberGroups().Any(t => t.Count() == 3))
             {
