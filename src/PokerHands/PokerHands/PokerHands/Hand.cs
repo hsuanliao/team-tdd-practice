@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PokerHands.HandCategoryRules;
 
 namespace PokerHands
 {
@@ -17,32 +18,24 @@ namespace PokerHands
 
         private HandCategory GetCategory()
         {
-            var cardNumberGroups = Cards
-                .Select(t => t.Number)
-                .OrderBy(t => t)
-                .GroupBy(t => t)
-                .ToList();
-            if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 4))
+            var rules = new List<IHandCategoryRule>
             {
-                return HandCategory.FourOfAKind;
-            }
-
-            if (cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 3) && cardNumberGroups.Any(t => t.Count() == 2))
+                new FourOfAKindRule(Cards),
+                new FullHouseRule(Cards),
+                new ThreeOfAKindRule(Cards)
+            };
+            var rule = rules.FirstOrDefault(r => r.Match());
+            if (rule != null)
             {
-                return HandCategory.FullHouse;
+                return rule.HandCategory;
             }
-
-            if (cardNumberGroups.Count == 3 && cardNumberGroups.Any(t => t.Count() == 3))
-            {
-                return HandCategory.ThreeOfAKind;
-            }
-
-            if (cardNumberGroups.Count == 3 && cardNumberGroups.Count(t => t.Count() == 2) == 2)
+            
+            if (CardNumberGroups().Count == 3 && CardNumberGroups().Count(t => t.Count() == 2) == 2)
             {
                 return HandCategory.TwoPairs;
             }
 
-            if (cardNumberGroups.Count == 4 && cardNumberGroups.Count(t => t.Count() == 2) == 1)
+            if (CardNumberGroups().Count == 4 && CardNumberGroups().Count(t => t.Count() == 2) == 1)
             {
                 return HandCategory.Pair;
             }
@@ -58,7 +51,7 @@ namespace PokerHands
                 .Select(t => t.NumberValue)
                 .OrderBy(o => o)
                 .ToList();
-            if (cardNumberGroups.Count == 5 && (cardNumberValueGroup.Last() - cardNumberValueGroup.First() == 4 ||
+            if (CardNumberGroups().Count == 5 && (cardNumberValueGroup.Last() - cardNumberValueGroup.First() == 4 ||
                                       cardNumberValueGroup.Last() - cardNumberValueGroup[3] == 9))
             {
                 if (isFlush)
@@ -75,6 +68,14 @@ namespace PokerHands
             }
 
             return HandCategory.HighCard;
+        }
+
+        private List<IGrouping<string, Card>> CardNumberGroups()
+        {
+            var cardNumberGroups = Cards
+                .GroupBy(t => t.Number)
+                .ToList();
+            return cardNumberGroups;
         }
 
         public IList<Card> Cards { get; set; }
