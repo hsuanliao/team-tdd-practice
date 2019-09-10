@@ -68,11 +68,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Card.cs" />
+    <Compile Include="HandCategoryRules\FlushRule.cs" />
     <Compile Include="HandCategoryRules\FullHouseRule.cs" />
     <Compile Include="Hand.cs" />
     <Compile Include="HandCategory.cs" />
     <Compile Include="HandCategoryRules\FourOfAKindRule.cs" />
+    <Compile Include="HandCategoryRules\HighCardRule.cs" />
     <Compile Include="HandCategoryRules\IHandCategoryRule.cs" />
+    <Compile Include="HandCategoryRules\PairRule.cs" />
+    <Compile Include="HandCategoryRules\StraightFlushRule.cs" />
+    <Compile Include="HandCategoryRules\StraightRule.cs" />
+    <Compile Include="HandCategoryRules\TwoPairsRule.cs" />
     <Compile Include="PokerHands.cs" />
     <Compile Include="PokerHandsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

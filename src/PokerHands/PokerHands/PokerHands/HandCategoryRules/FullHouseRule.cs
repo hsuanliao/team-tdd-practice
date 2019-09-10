@@ -5,18 +5,11 @@ namespace PokerHands.HandCategoryRules
 {
     internal class FullHouseRule : IHandCategoryRule
     {
-        private readonly IList<Card> _cards;
-
-        public FullHouseRule(IList<Card> cards)
-        {
-            _cards = cards;
-        }
-
         public HandCategory HandCategory => HandCategory.FullHouse;
 
-        public bool Match()
+        public bool Match(IList<Card> cards)
         {
-            var cardNumberGroups = _cards.GroupBy(t => t.Number).ToList();
+            var cardNumberGroups = cards.GroupBy(t => t.Number).ToList();
             return cardNumberGroups.Count == 2 && cardNumberGroups.Any(t => t.Count() == 3) && cardNumberGroups.Any(t => t.Count() == 2);
         }
     }

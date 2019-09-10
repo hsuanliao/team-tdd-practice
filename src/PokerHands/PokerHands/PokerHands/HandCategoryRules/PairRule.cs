@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace PokerHands.HandCategoryRules
 {
-    internal class ThreeOfAKindRule : IHandCategoryRule
+    internal class PairRule : IHandCategoryRule
     {
-        public HandCategory HandCategory => HandCategory.ThreeOfAKind;
+        public HandCategory HandCategory => HandCategory.Pair;
 
         public bool Match(IList<Card> cards)
         {
             var cardNumberGroups = cards.GroupBy(t => t.Number).ToList();
-            return cardNumberGroups.Count == 3 && cardNumberGroups.Any(t => t.Count() == 3);
+            return cardNumberGroups.Count == 4 && cardNumberGroups.Count(t => t.Count() == 2) == 1;
         }
     }
 }
