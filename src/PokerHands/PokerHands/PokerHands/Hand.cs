@@ -33,6 +33,33 @@ namespace PokerHands
             return rules.First(r => r.Match(Cards)).HandCategory;
         }
 
-        public IList<Card> Cards { get; set; }
+        public IList<Card> Cards { get; }
+
+        public IList<int> KeyCards => GetKeyCards();
+
+        private IList<int> GetKeyCards()
+        {
+            var keyCardValues = Cards
+                .Select(c => c.NumberValue)
+                .GroupBy(t => t)
+                .Select(s => new
+                {
+                    KeyCardValue = s.Key,
+                    Count = s.Count()
+                })
+                .OrderByDescending(o => o.Count)
+                .ThenByDescending(t => t.KeyCardValue)
+                .Select(k => k.KeyCardValue)
+                .ToList();
+
+            // HandCategory.Straight: 12345
+            if (keyCardValues.Count == 5 && keyCardValues[0] - keyCardValues[1] == 9)
+            {
+                keyCardValues[0] = 1;
+                keyCardValues = keyCardValues.OrderByDescending(o => o).ToList();
+            }
+
+            return keyCardValues;
+        }
     }
 }

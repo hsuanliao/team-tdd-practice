@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 
 namespace PokerHands
 {
@@ -29,30 +30,41 @@ namespace PokerHands
 
         public string Duel(string firstHand, string secondHand)
         {
+            int compareResult;
+            string keyCard = null;
+
             var firstHandCategory = new Hand(firstHand).Category;
             var secondHandCategory = new Hand(secondHand).Category;
             if (firstHandCategory == secondHandCategory)
             {
-                var compareResult = CompareSameHandCategory(firstHand, secondHand, out var keyCard);
-                if (compareResult == 0)
-                {
-                    return "Tie";
-                }
-                var playerName = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
-                return $"{playerName} wins. - with {_handCategoryLookup[firstHandCategory]}, key card {keyCard}";
+                compareResult = CompareSameHandCategory(firstHand, secondHand, out keyCard);
             }
+            else
+            {
+                compareResult = firstHandCategory > secondHandCategory ? 1 : -1;
+            }
+            var winnerHandCategory = compareResult > 0 ? firstHandCategory : secondHandCategory;
 
-            var winner = firstHandCategory > secondHandCategory ? _firstPlayerName : _secondPlayerName;
-            var winnerHandCategory = firstHandCategory > secondHandCategory ? firstHandCategory : secondHandCategory;
-            return $"{winner} wins. - with {_handCategoryLookup[winnerHandCategory]}";
+            if (compareResult == 0)
+            {
+                return "Tie";
+            }
+            var winner = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
+
+            var result = $"{winner} wins. - with {_handCategoryLookup[winnerHandCategory]}";
+            if (!keyCard.IsNullOrEmpty())
+            {
+                result += $", key card {keyCard}";
+            }
+            return result;
         }
 
         private static int CompareSameHandCategory(string firstHand, string secondHand, out string keyCard)
         {
             keyCard = string.Empty;
             int compareResult = 0;
-            var firstKeyCardValues = GetKeyCardValues(firstHand);
-            var secondKeyCardValues = GetKeyCardValues(secondHand);
+            var firstKeyCardValues = new Hand(firstHand).KeyCards;
+            var secondKeyCardValues = new Hand(secondHand).KeyCards;
 
             // 判斷兩手牌, 是否同時為順子, 且一手牌為 TJQKA, 一手牌為 A2345
             // 若是KeyCard比較時.不比較A
@@ -100,32 +112,6 @@ namespace PokerHands
             }
 
             return compareResult;
-        }
-
-        private static IList<int> GetKeyCardValues(string hand)
-        {
-            var keyCardValues = hand
-                .Split(',')
-                .Select(t => new Card(t).NumberValue)
-                .GroupBy(t => t)
-                .Select(s => new
-                {
-                    KeyCardValue = s.Key,
-                    Count = s.Count()
-                })
-                .OrderByDescending(o => o.Count)
-                .ThenByDescending(t => t.KeyCardValue)
-                .Select(k => k.KeyCardValue)
-                .ToList();
-
-            // HandCategory.Straight: 12345
-            if (keyCardValues.Count == 5 && keyCardValues[0] - keyCardValues[1] == 9)
-            {
-                keyCardValues[0] = 1;
-                keyCardValues = keyCardValues.OrderByDescending(o => o).ToList();
-            }
-
-            return keyCardValues;
         }
     }
 }
