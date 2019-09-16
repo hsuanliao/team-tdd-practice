@@ -79,6 +79,7 @@
     <Compile Include="HandCategoryRules\StraightFlushRule.cs" />
     <Compile Include="HandCategoryRules\StraightRule.cs" />
     <Compile Include="HandCategoryRules\TwoPairsRule.cs" />
+    <Compile Include="HandComparer.cs" />
     <Compile Include="PokerHands.cs" />
     <Compile Include="PokerHandsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

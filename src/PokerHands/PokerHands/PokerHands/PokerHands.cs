@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Castle.Core.Internal;
 
 namespace PokerHands
 {
@@ -30,88 +28,53 @@ namespace PokerHands
 
         public string Duel(string firstHand, string secondHand)
         {
-            int compareResult;
-            string keyCard = null;
-
-            var firstHandCategory = new Hand(firstHand).Category;
-            var secondHandCategory = new Hand(secondHand).Category;
-            if (firstHandCategory == secondHandCategory)
-            {
-                compareResult = CompareSameHandCategory(firstHand, secondHand, out keyCard);
-            }
-            else
-            {
-                compareResult = firstHandCategory > secondHandCategory ? 1 : -1;
-            }
-            var winnerHandCategory = compareResult > 0 ? firstHandCategory : secondHandCategory;
-
+            var handComparer = new HandComparer(new Hand(firstHand), new Hand(secondHand));
+            var compareResult = handComparer.Compare();
             if (compareResult == 0)
             {
                 return "Tie";
             }
             var winner = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
 
-            var result = $"{winner} wins. - with {_handCategoryLookup[winnerHandCategory]}";
-            if (!keyCard.IsNullOrEmpty())
+            var result = $"{winner} wins. - with {_handCategoryLookup[handComparer.WinnerHandCategory]}";
+            if (handComparer.WinsKeyCardValue > 0)
             {
-                result += $", key card {keyCard}";
+                result += $", key card {KeyCardDisplay(handComparer.WinsKeyCardValue)}";
             }
             return result;
         }
 
-        private static int CompareSameHandCategory(string firstHand, string secondHand, out string keyCard)
+        private static string KeyCardDisplay(int keyCardValue)
         {
-            keyCard = string.Empty;
-            int compareResult = 0;
-            var firstKeyCardValues = new Hand(firstHand).KeyCards;
-            var secondKeyCardValues = new Hand(secondHand).KeyCards;
-
-            // 判斷兩手牌, 是否同時為順子, 且一手牌為 TJQKA, 一手牌為 A2345
-            // 若是KeyCard比較時.不比較A
-            if (firstKeyCardValues.Union(secondKeyCardValues).Count(v => v == 14 || v == 1) == 2)
+            string winnerKeyCard = null;
+            switch (keyCardValue)
             {
-                firstKeyCardValues = firstKeyCardValues.Except(new[] { 1, 14 }).ToList();
-                secondKeyCardValues = secondKeyCardValues.Except(new[] { 1, 14 }).ToList();
-            }
-
-            for (int i = 0; i < firstKeyCardValues.Count; i++)
-            {
-                if (firstKeyCardValues[i] != secondKeyCardValues[i])
-                {
-                    compareResult = firstKeyCardValues[i] > secondKeyCardValues[i] ? 1 : -1;
-                    var winsKeyCardValue = compareResult > 0 ? firstKeyCardValues[i] : secondKeyCardValues[i];
-                    switch (winsKeyCardValue)
-                    {
-                        case 10:
-                            keyCard = "Ten";
-                            break;
-
-                        case 11:
-                            keyCard = "Jack";
-                            break;
-
-                        case 12:
-                            keyCard = "Queen";
-                            break;
-
-                        case 13:
-                            keyCard = "King";
-                            break;
-
-                        case 14:
-                            keyCard = "Ace";
-                            break;
-
-                        default:
-                            keyCard = winsKeyCardValue.ToString();
-                            break;
-                    }
-
+                case 10:
+                    winnerKeyCard = "Ten";
                     break;
-                }
+
+                case 11:
+                    winnerKeyCard = "Jack";
+                    break;
+
+                case 12:
+                    winnerKeyCard = "Queen";
+                    break;
+
+                case 13:
+                    winnerKeyCard = "King";
+                    break;
+
+                case 14:
+                    winnerKeyCard = "Ace";
+                    break;
+
+                default:
+                    winnerKeyCard = keyCardValue.ToString();
+                    break;
             }
 
-            return compareResult;
+            return winnerKeyCard;
         }
     }
 }
