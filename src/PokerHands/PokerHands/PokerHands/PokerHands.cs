@@ -28,20 +28,22 @@ namespace PokerHands
 
         public string Duel(string firstHand, string secondHand)
         {
-            var handComparer = new HandComparer(new Hand(firstHand), new Hand(secondHand));
-            var compareResult = handComparer.Compare();
-            if (compareResult == 0)
-            {
-                return "Tie";
-            }
-            var winner = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
+            var handComparer = new HandComparer();
+            var compareResult = handComparer.Compare(new Hand(firstHand), new Hand(secondHand));
+            return compareResult == 0
+                ? "Tie"
+                : $"{GetWinner(compareResult)} wins. - with {_handCategoryLookup[handComparer.WinnerHandCategory]}{GetKeyCardInfo(handComparer)}";
+        }
 
-            var result = $"{winner} wins. - with {_handCategoryLookup[handComparer.WinnerHandCategory]}";
-            if (handComparer.WinsKeyCardValue > 0)
-            {
-                result += $", key card {KeyCardDisplay(handComparer.WinsKeyCardValue)}";
-            }
-            return result;
+        private string GetWinner(int compareResult)
+        {
+            var winner = compareResult > 0 ? _firstPlayerName : _secondPlayerName;
+            return winner;
+        }
+
+        private static string GetKeyCardInfo(HandComparer handComparer)
+        {
+            return handComparer.WinsKeyCardValue <= 0 ? string.Empty : $", key card {KeyCardDisplay(handComparer.WinsKeyCardValue)}";
         }
 
         private static string KeyCardDisplay(int keyCardValue)

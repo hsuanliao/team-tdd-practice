@@ -1,30 +1,32 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PokerHands
 {
-    internal class HandComparer
+    internal class HandComparer : IComparer<Hand>
     {
-        private readonly Hand _secondHand;
-        private readonly Hand _firstHand;
         public int WinsKeyCardValue { get; private set; }
         public HandCategory WinnerHandCategory { get; private set; }
 
-        public HandComparer(Hand firstHand, Hand secondHand)
+        public int Compare(Hand firstHand, Hand secondHand)
         {
-            _firstHand = firstHand;
-            _secondHand = secondHand;
-        }
+            var compareResult = 0;
+            if (firstHand == null)
+            {
+                throw new ArgumentNullException(nameof(firstHand));
+            }
+            if (secondHand == null)
+            {
+                throw new ArgumentNullException(nameof(secondHand));
+            }
 
-        public int Compare()
-        {
-            int compareResult;
-            var firstHandCategory = _firstHand.Category;
-            var secondHandCategory = _secondHand.Category;
+            var firstHandCategory = firstHand.Category;
+            var secondHandCategory = secondHand.Category;
             if (firstHandCategory == secondHandCategory)
             {
-                int compareResult1 = 0;
-                var firstKeyCardValues = _firstHand.KeyCards;
-                var secondKeyCardValues = _secondHand.KeyCards;
+                var firstKeyCardValues = firstHand.KeyCards;
+                var secondKeyCardValues = secondHand.KeyCards;
 
                 // 判斷兩手牌, 是否同時為順子, 且一手牌為 TJQKA, 一手牌為 A2345
                 // 若是KeyCard比較時.不比較A
@@ -34,18 +36,18 @@ namespace PokerHands
                     secondKeyCardValues = secondKeyCardValues.Except(new[] { 1, 14 }).ToList();
                 }
 
-                for (int i = 0; i < firstKeyCardValues.Count; i++)
+                for (var i = 0; i < firstKeyCardValues.Count; i++)
                 {
-                    if (firstKeyCardValues[i] != secondKeyCardValues[i])
+                    if (firstKeyCardValues[i] == secondKeyCardValues[i])
                     {
-                        compareResult1 = firstKeyCardValues[i] > secondKeyCardValues[i] ? 1 : -1;
-                        WinsKeyCardValue = compareResult1 > 0 ? firstKeyCardValues[i] : secondKeyCardValues[i];
-
-                        break;
+                        continue;
                     }
-                }
 
-                compareResult = compareResult1;
+                    compareResult = firstKeyCardValues[i] > secondKeyCardValues[i] ? 1 : -1;
+                    WinsKeyCardValue = compareResult > 0 ? firstKeyCardValues[i] : secondKeyCardValues[i];
+
+                    break;
+                }
             }
             else
             {
@@ -53,6 +55,7 @@ namespace PokerHands
             }
 
             WinnerHandCategory = compareResult > 0 ? firstHandCategory : secondHandCategory;
+
             return compareResult;
         }
     }
