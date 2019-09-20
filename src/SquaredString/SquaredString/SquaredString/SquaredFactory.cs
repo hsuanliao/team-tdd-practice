@@ -22,17 +22,24 @@
                 }
             }
 
-            for (var i = 0; i < charArr.GetLength(0); i++)
+            for (var i = 0; i < charArr.GetLength(0) - 1; i++)
             {
-                for (var j = 0; j < charArr.GetLength(1); j++)
+                for (var j = i + 1; j < charArr.GetLength(1); j++)
                 {
-                    if (i <= j)
-                    {
-                        continue;
-                    }
                     Swap(ref charArr[i, j], ref charArr[j, i]);
                 }
             }
+            //for (var i = 0; i < charArr.GetLength(0); i++)
+            //{
+            //    for (var j = 0; j < charArr.GetLength(1); j++)
+            //    {
+            //        if (i <= j)
+            //        {
+            //            continue;
+            //        }
+            //        Swap(ref charArr[i, j], ref charArr[j, i]);
+            //    }
+            //}
 
             var output = string.Empty;
             for (var i = 0; i < charArr.GetLength(0); i++)
