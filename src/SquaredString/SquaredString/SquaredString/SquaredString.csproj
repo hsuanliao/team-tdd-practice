@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SquaredFactory.cs" />
+    <Compile Include="SquaredStringTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
