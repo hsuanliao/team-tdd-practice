@@ -56,10 +56,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SquaredFactory.cs" />
     <Compile Include="SquaredStringTest.cs" />
+    <Compile Include="v2\Rot90ClockStrategy.cs" />
+    <Compile Include="v2\SquaredChar.cs" />
+    <Compile Include="v2\SquaredCharCollection.cs" />
+    <Compile Include="v2\SquaredStringService.cs" />
+    <Compile Include="v2\SquaredStringTest.cs" />
+    <Compile Include="v2\SymmetryStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
