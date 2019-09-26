@@ -62,6 +62,8 @@
     <Compile Include="v2\SquaredStringService.cs" />
     <Compile Include="v2\SquaredStringTest.cs" />
     <Compile Include="v2\SymmetryStrategy.cs" />
+    <Compile Include="v3\CubicFactory.cs" />
+    <Compile Include="v3\CubicStringTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
