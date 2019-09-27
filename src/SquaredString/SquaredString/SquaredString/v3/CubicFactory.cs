@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SquaredString.v3
@@ -34,24 +35,15 @@ namespace SquaredString.v3
                 Value = x.Value
             });
 
-            //var invertedRows = invertedCubic.GroupBy(x => x.PointX)
-            //    .Select(g => g.OrderBy(e => e.PointY).Select(e => e.Value))
-            //    .Select(l => string.Join("", l))
-            //    .Aggregate((r, s) =>
-            //    {
-            //        if (r.Length > 0)
-            //        {
-            //            r += "\n";
-            //        }
+            return ConvertToResultString(invertedCubic);
+        }
 
-            //        r += s;
-            //        return r;
-            //    });
-            //return invertedRows;
+        private static string ConvertToResultString(IEnumerable<CubeElement> cubeElementList)
+        {
             string result = string.Empty;
-            foreach (var group in invertedCubic.GroupBy(x => x.PointX))
+            foreach (var group in cubeElementList.GroupBy(x => x.PointX))
             {
-                var list = group.OrderBy(t => t.PointY);
+                var list = @group.OrderBy(t => t.PointY);
                 foreach (var cubeElement in list)
                 {
                     result += cubeElement.Value.ToString();
@@ -61,9 +53,19 @@ namespace SquaredString.v3
             }
 
             return result.TrimEnd('\n');
-            //return invertedRows.TrimStart('\n');
+        }
 
-            //return string.Join("\n", invertedRows);
+        public string Rotate90Clockwise()
+        {
+            var rowCount = _cubeElementList.Max(x => x.PointY);
+            var invertedCubic = _cubeElementList.Select(x => new CubeElement()
+            {
+                PointY = rowCount - x.PointX,
+                PointX = x.PointY,
+                Value = x.Value
+            });
+
+            return ConvertToResultString(invertedCubic);
         }
     }
 }
