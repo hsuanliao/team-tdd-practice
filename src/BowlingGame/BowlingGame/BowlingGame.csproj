@@ -53,6 +53,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BowlingGame.cs" />
+    <Compile Include="BowlingGameTest.cs" />
+    <Compile Include="Frame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
