@@ -15,7 +15,11 @@ namespace BowlingGame
                 return "Invalid!!";
             }
 
-            throw new NotImplementedException();
+            //string.Join("-", frameSet.Select(f => f.Score));
+            //return frameSet.Aggregate(string.Empty,
+            //    (result, next) => string.Concat(result, next.Score.ToString(), "-"))
+            //    .TrimEnd('-');
+            return frameSet.First().Score.ToString();
         }
     }
 }
