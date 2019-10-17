@@ -2,14 +2,19 @@
 {
     public class Frame
     {
-        public int Ball1Value => int.Parse(Ball1);
-        public int Ball2Value => int.Parse(Ball2);
+        public int Ball1Value => int.TryParse(Ball1, out var tmp) ? tmp : 0;
+
+        public int Ball2Value => int.TryParse(Ball2, out var tmp) ? tmp : 0;
 
         public Frame(string source)
         {
             Ball1 = source[0].ToString();
             Ball2 = source.Length == 1 ? string.Empty : source[1].ToString();
-            if (string.IsNullOrEmpty(Ball2))
+            if (Ball1.Equals("X"))
+            {
+                FrameType = FrameType.Strike;
+            }
+            else if (string.IsNullOrEmpty(Ball2))
             {
                 FrameType = FrameType.NotComplete;
             }
@@ -25,15 +30,21 @@
         {
             get
             {
-                // TODO: solve this problem
-                return !Score.HasValue || Score <= 9;
+                return !Score.HasValue || CurrentScore <= 9;
             }
         }
+
+        private int CurrentScore => Ball1Value + Ball2Value;
 
         public int? Score
         {
             get
             {
+                if (FrameType == FrameType.Strike)
+                {
+                    // TODO: Calculate next two ball value
+                }
+
                 if (FrameType == FrameType.NotComplete)
                 {
                     return null;
@@ -48,7 +59,7 @@
                     return 10 + NextFrame?.Ball1Value ?? 0;
                 }
 
-                return Ball1Value + Ball2Value;
+                return CurrentScore;
             }
         }
 
@@ -62,6 +73,7 @@
     {
         Default,
         NotComplete,
-        Spare
+        Spare,
+        Strike
     }
 }

@@ -47,6 +47,24 @@ namespace BowlingGame
             ScoreShouldBe("5/,5", "15-");
         }
 
+        [Test]
+        public void A08_MultiFrames_InputIs5S51()
+        {
+            ScoreShouldBe("5/,51", "15-21");
+        }
+
+        [Test]
+        public void A09_MultiFrames_InputIs5S5S51()
+        {
+            ScoreShouldBe("5/,5/,51", "15-30-36");
+        }
+
+        [Test]
+        public void A10_MultiFrames_InputIsXX51()
+        {
+            ScoreShouldBe("X,X,51", "25-41-47");
+        }
+
         private static void ScoreShouldBe(string input, string expected)
         {
             var bowlingGame = new BowlingGame();

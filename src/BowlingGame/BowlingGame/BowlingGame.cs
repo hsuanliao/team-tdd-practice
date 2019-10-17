@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace BowlingGame
 {
@@ -14,6 +13,7 @@ namespace BowlingGame
             for (var i = 0; i < frameSet.Count - 1; i++)
             {
                 frameSet[i].NextFrame = frameSet[i + 1];
+                //frameSet[i].NextNextFrame = frameSet[i + 1+1];
             }
 
             if (frameSet.Any(x => !x.IsValid))
