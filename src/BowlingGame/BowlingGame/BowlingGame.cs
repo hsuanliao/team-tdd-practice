@@ -9,12 +9,25 @@ namespace BowlingGame
         public string Score(string input)
         {
             var frameSet = input.Split(',')
-                .Select(x => new Frame(x)).ToList();
+                .Select(x => new Frame(x))
+                .ToList();
+
+
+            //frameSet.ForEach(
+            //    frame =>
+            //    {
+            //        var index = frameSet.IndexOf(frame);
+            //        frame.AfterBalls = frameSet.Skip(index + 1).SelectMany(f => f.CurrentBalls).ToList();
+            //    });
             for (var i = 0; i < frameSet.Count - 1; i++)
             {
-                frameSet[i].NextFrame = frameSet[i + 1];
-                //frameSet[i].NextNextFrame = frameSet[i + 1+1];
+                frameSet[i].AfterBalls = frameSet.Skip(i + 1).SelectMany(f => f.CurrentBalls).ToList();
             }
+            //for (var i = 0; i < frameSet.Count - 1; i++)
+            //{
+            //    frameSet[i].NextFrame = frameSet[i + 1];
+            //    //frameSet[i].NextNextFrame = frameSet[i + 1+1];
+            //}
 
             if (frameSet.Any(x => !x.IsValid))
             {

@@ -1,27 +1,46 @@
-﻿namespace BowlingGame
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace BowlingGame
 {
     public class Frame
     {
-        public int Ball1Value => int.TryParse(Ball1, out var tmp) ? tmp : 0;
-
-        public int Ball2Value => int.TryParse(Ball2, out var tmp) ? tmp : 0;
-
         public Frame(string source)
         {
-            Ball1 = source[0].ToString();
-            Ball2 = source.Length == 1 ? string.Empty : source[1].ToString();
-            if (Ball1.Equals("X"))
+            var ball1 = ParseBall(source, 0);
+            var ball2 = ParseBall(source, 1);
+
+            if (ball1.Equals("X"))
             {
                 FrameType = FrameType.Strike;
+                CurrentBalls.Add(10);
             }
-            else if (string.IsNullOrEmpty(Ball2))
+            else if (string.IsNullOrEmpty(ball2))
             {
                 FrameType = FrameType.NotComplete;
             }
-            else if (Ball2.Equals("/"))
+            else if (ball2.Equals("/"))
             {
                 FrameType = FrameType.Spare;
+                CurrentBalls.Add(10 - CurrentBalls.FirstOrDefault());
             }
+        }
+
+        private string ParseBall(string source, int index)
+        {
+            if (source.Length <= index)
+            {
+                return string.Empty;
+            }
+
+            var ball = source[index].ToString();
+
+            if (int.TryParse(ball, out var ball1Value))
+            {
+                CurrentBalls.Add(ball1Value);
+            }
+
+            return ball;
         }
 
         private FrameType FrameType { get; }
@@ -30,11 +49,11 @@
         {
             get
             {
-                return !Score.HasValue || CurrentScore <= 9;
+                return FrameType != FrameType.Default || CurrentScore <= 9;
             }
         }
 
-        private int CurrentScore => Ball1Value + Ball2Value;
+        private int CurrentScore => CurrentBalls.Sum();
 
         public int? Score
         {
@@ -42,7 +61,12 @@
             {
                 if (FrameType == FrameType.Strike)
                 {
-                    // TODO: Calculate next two ball value
+                    if (AfterBalls.Count < 2)
+                    {
+                        return null;
+                    }
+
+                    return 10 + AfterBalls.Take(2).Sum();
                 }
 
                 if (FrameType == FrameType.NotComplete)
@@ -52,21 +76,21 @@
 
                 if (FrameType == FrameType.Spare)
                 {
-                    if (NextFrame == null)
+                    if (AfterBalls.Count == 0)
                     {
                         return null;
                     }
-                    return 10 + NextFrame?.Ball1Value ?? 0;
+
+                    return 10 + AfterBalls.First();
                 }
 
                 return CurrentScore;
             }
         }
 
-        public string Ball2 { get; }
+        public IList<int> CurrentBalls { get; } = new List<int>();
 
-        public string Ball1 { get; }
-        public Frame NextFrame { get; set; }
+        public IList<int> AfterBalls { get; set; } = new List<int>();
     }
 
     public enum FrameType
