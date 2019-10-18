@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BowlingGame
 {
@@ -34,11 +35,22 @@ namespace BowlingGame
                 return "Invalid!!";
             }
 
-            return string.Join("-", frameSet.Select(f => CalculateTotalScore(f.Score)));
+            return DisplayScore(frameSet);
             //return frameSet.Aggregate(string.Empty,
             //    (result, next) => string.Concat(result, next.Score.ToString(), "-"))
             //    .TrimEnd('-');
             //return frameSet.First().Score.ToString();
+        }
+
+        private string DisplayScore(List<Frame> frameSet)
+        {
+            var frameScore = string.Join("-", frameSet.Select(f => CalculateTotalScore(f.Score)));
+            if (frameSet.Count == 10)
+            {
+                frameScore += $" (total: {_totalScore})";
+            }
+
+            return frameScore;
         }
 
         private string CalculateTotalScore(int? frameScore)
