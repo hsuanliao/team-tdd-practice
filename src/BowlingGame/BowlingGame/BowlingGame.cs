@@ -10,9 +10,9 @@ namespace BowlingGame
         public string Score(string input)
         {
             var frameSet = input.Split(',')
-                .Select(x => new Frame(x))
+                .Select((s, i) => i < 9 ? new Frame(s) : new LastFrame(s))
+                //.Select(x => new Frame(x))
                 .ToList();
-
 
             //frameSet.ForEach(
             //    frame =>

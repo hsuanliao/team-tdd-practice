@@ -26,7 +26,7 @@ namespace BowlingGame
             }
         }
 
-        private string ParseBall(string source, int index)
+        protected string ParseBall(string source, int index)
         {
             if (source.Length <= index)
             {
@@ -43,7 +43,7 @@ namespace BowlingGame
             return ball;
         }
 
-        private FrameType FrameType { get; }
+        protected FrameType FrameType { get; set; }
 
         public bool IsValid
         {
@@ -98,6 +98,7 @@ namespace BowlingGame
         Default,
         NotComplete,
         Spare,
-        Strike
+        Strike,
+        LastFrame
     }
 }

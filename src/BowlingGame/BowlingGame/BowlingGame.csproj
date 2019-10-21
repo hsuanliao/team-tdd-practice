@@ -56,6 +56,7 @@
     <Compile Include="BowlingGame.cs" />
     <Compile Include="BowlingGameTest.cs" />
     <Compile Include="Frame.cs" />
+    <Compile Include="LastFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
