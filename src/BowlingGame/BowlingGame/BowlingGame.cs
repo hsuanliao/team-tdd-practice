@@ -45,7 +45,7 @@ namespace BowlingGame
         private string DisplayScore(List<Frame> frameSet)
         {
             var frameScore = string.Join("-", frameSet.Select(f => CalculateTotalScore(f.Score)));
-            if (frameSet.Count == 10)
+            if (frameSet.Count == 10 && frameSet.All(x => x.FrameType != FrameType.NotComplete))
             {
                 frameScore += $" (total: {_totalScore})";
             }

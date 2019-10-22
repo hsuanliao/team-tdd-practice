@@ -5,21 +5,25 @@ namespace BowlingGame
 {
     public class Frame
     {
+        protected Frame()
+        {
+        }
+
         public Frame(string source)
         {
             var ball1 = ParseBall(source, 0);
-            var ball2 = ParseBall(source, 1);
-
             if (ball1.Equals("X"))
             {
                 FrameType = FrameType.Strike;
                 CurrentBalls.Add(10);
             }
-            else if (string.IsNullOrEmpty(ball2))
+
+            var ball2 = ParseBall(source, 1);
+            if (string.IsNullOrEmpty(ball2) && FrameType != FrameType.Strike)
             {
                 FrameType = FrameType.NotComplete;
             }
-            else if (ball2.Equals("/"))
+            else if (ball2 != null && ball2.Equals("/"))
             {
                 FrameType = FrameType.Spare;
                 CurrentBalls.Add(10 - CurrentBalls.FirstOrDefault());
@@ -43,7 +47,7 @@ namespace BowlingGame
             return ball;
         }
 
-        protected FrameType FrameType { get; set; }
+        public FrameType FrameType { get; protected set; }
 
         public bool IsValid
         {

@@ -98,7 +98,13 @@ namespace BowlingGame
         [Test]
         public void A16_MultiFrames_InputIsXXXXXXXXXX9S_GameFinish()
         {
-            ScoreShouldBe("X,X,X,X,X,X,X,X,X,X9/", "30-60-90-120-150-180-210-240-270-290 (total: 290)");
+            ScoreShouldBe("X,X,X,X,X,X,X,X,X,X9/", "30-60-90-120-150-180-210-240-269-289 (total: 289)");
+        }
+
+        [Test]
+        public void A17_MultiFrames_InputIsXXXXXXXXXX9()
+        {
+            ScoreShouldBe("X,X,X,X,X,X,X,X,X,X9", "30-60-90-120-150-180-210-240-269-");
         }
 
         private static void ScoreShouldBe(string input, string expected)
