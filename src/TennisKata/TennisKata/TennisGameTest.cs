@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Channels;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace TennisKata
 {
@@ -17,21 +16,21 @@ namespace TennisKata
         [Test]
         public void A02_FifteenLove()
         {
-            GiverPlayer1Score(1);
+            GivePlayer1Score(1);
             ScoreShouldBe("Fifteen Love");
         }
 
         [Test]
         public void A03_ThirtyLove()
         {
-            GiverPlayer1Score(2);
+            GivePlayer1Score(2);
             ScoreShouldBe("Thirty Love");
         }
 
         [Test]
         public void A04_FortyLove()
         {
-            GiverPlayer1Score(3);
+            GivePlayer1Score(3);
             ScoreShouldBe("Forty Love");
         }
 
@@ -56,10 +55,50 @@ namespace TennisKata
             ScoreShouldBe("Love Forty");
         }
 
+        [Test]
+        public void A08_FifteenAll()
+        {
+            GivePlayer1Score(1);
+            GivePlayer2Score(1);
+            ScoreShouldBe("Fifteen All");
+        }
+
+        [Test]
+        public void A09_ThirtyAll()
+        {
+            GivePlayer1Score(2);
+            GivePlayer2Score(2);
+            ScoreShouldBe("Thirty All");
+        }
+
+        [Test]
+        public void A10_Deuce_3X3()
+        {
+            GivePlayer1Score(3);
+            GivePlayer2Score(3);
+            ScoreShouldBe("Deuce");
+        }
+
+        [Test]
+        public void A11_Deuce_4X4()
+        {
+            GivePlayer1Score(4);
+            GivePlayer2Score(4);
+            ScoreShouldBe("Deuce");
+        }
+
         [SetUp]
         public void Setup()
         {
             _tennisGame = new TennisGame();
+        }
+
+        private void GivePlayer1Score(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _tennisGame.Player1Score();
+            }
         }
 
         private void GivePlayer2Score(int count)
@@ -67,14 +106,6 @@ namespace TennisKata
             for (int i = 0; i < count; i++)
             {
                 _tennisGame.Player2Score();
-            }
-        }
-
-        private void GiverPlayer1Score(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                _tennisGame.Player1Score();
             }
         }
 
