@@ -87,10 +87,50 @@ namespace TennisKata
             ScoreShouldBe("Deuce");
         }
 
+        [Test]
+        public void A12_Advantage_FirstPlayer_4X3()
+        {
+            GivePlayer1Score(4);
+            GivePlayer2Score(3);
+            ScoreShouldBe("Advantage Joan");
+        }
+
+        [Test]
+        public void A13_Advantage_SecondPlayer_3X4()
+        {
+            GivePlayer1Score(3);
+            GivePlayer2Score(4);
+            ScoreShouldBe("Advantage Debbie");
+        }
+
+        [Test]
+        public void A14_Win_FirstPlayer_4X2()
+        {
+            GivePlayer1Score(4);
+            GivePlayer2Score(2);
+            ScoreShouldBe("Win for Joan");
+        }
+
+        [Test]
+        public void A15_Win_FirstPlayer_6X4()
+        {
+            GivePlayer1Score(6);
+            GivePlayer2Score(4);
+            ScoreShouldBe("Win for Joan");
+        }
+
+        [Test]
+        public void A16_Win_SecondPlayer_4X6()
+        {
+            GivePlayer1Score(4);
+            GivePlayer2Score(6);
+            ScoreShouldBe("Win for Debbie");
+        }
+
         [SetUp]
         public void Setup()
         {
-            _tennisGame = new TennisGame();
+            _tennisGame = new TennisGame("Joan", "Debbie");
         }
 
         private void GivePlayer1Score(int count)
