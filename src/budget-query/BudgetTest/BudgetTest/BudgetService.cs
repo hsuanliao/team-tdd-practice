@@ -25,10 +25,13 @@ namespace BudgetTest
                 return 0;
             }
 
+            var startRange = int.Parse(startDateTime.ToString("yyyyMM"));
+            var endRange = int.Parse(endDateTime.ToString("yyyyMM"));
+
             return budgets
                 .Where(o =>
-                    o.YearMonth == startDateTime.ToString("yyyyMM") &&
-                    o.YearMonth == endDateTime.ToString("yyyyMM"))
+                    int.Parse(o.YearMonth) >= startRange
+                    && int.Parse(o.YearMonth) <= endRange)
                 .Sum(o => o.Amount);
             throw new NotImplementedException();
         }
