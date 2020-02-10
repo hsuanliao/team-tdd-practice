@@ -60,6 +60,18 @@ namespace BudgetTest
             AmountShouldBe(new DateTime(2019, 12, 1), new DateTime(2020, 2, 29), 3241);
         }
 
+        [Test]
+        public void A06_QueryPartialMonthDateRangeFrom20200125To20200131()
+        {
+            RepositoryReturnsFullData(new List<Budget>()
+            {
+                new Budget() {YearMonth = "201912", Amount = 31m},
+                new Budget() {YearMonth = "202001", Amount = 310m},
+                new Budget() {YearMonth = "202002", Amount = 2900m}
+            });
+            AmountShouldBe(new DateTime(2020, 1, 25), new DateTime(2020, 1, 31), 70);
+        }
+
         [SetUp]
         public void SetUp()
         {
