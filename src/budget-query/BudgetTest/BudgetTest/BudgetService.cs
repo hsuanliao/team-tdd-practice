@@ -35,19 +35,35 @@ namespace BudgetTest
                     && int.Parse(o.YearMonth) <= endRange)
                 .Sum(o => o.Amount);
 
-            var excludedStartBudget = GetExcludedStartBudget(startDateTime, budgets, startRange);
+            decimal excludedStartBudget;
+            var targetStartBudget = budgets.FirstOrDefault(b => int.Parse(b.YearMonth) == startRange);
+            if (targetStartBudget == null)
+            {
+                excludedStartBudget = 0;
+            }
+            else
+            {
+                var startMonthBudget = targetStartBudget.Amount;
+                var daysInStartMonth = DateTime.DaysInMonth(startDateTime.Year, startDateTime.Month);
+                var excludedStartDays = startDateTime.Day - 1;
+                excludedStartBudget = startMonthBudget / daysInStartMonth * excludedStartDays;
+            }
 
-            return totalBudget - excludedStartBudget;
-            throw new NotImplementedException();
-        }
+            decimal excludedEndBudget;
+            var targetEndBudget = budgets.FirstOrDefault(b => int.Parse(b.YearMonth) == endRange);
+            if (targetEndBudget == null)
+            {
+                excludedEndBudget = 0;
+            }
+            else
+            {
+                var endMonthBudget = targetEndBudget.Amount;
+                var daysInEndMonth = DateTime.DaysInMonth(endDateTime.Year, endDateTime.Month);
+                var excludedEndDays = daysInEndMonth - endDateTime.Day;
+                excludedEndBudget = endMonthBudget / daysInEndMonth * excludedEndDays;
+            }
 
-        private static decimal GetExcludedStartBudget(DateTime startDateTime, IList<Budget> budgets, int startRange)
-        {
-            var startMonthBudget = budgets.First(b => int.Parse(b.YearMonth) == startRange).Amount;
-            var daysInStartMonth = DateTime.DaysInMonth(startDateTime.Year, startDateTime.Month);
-            var excludedStartDays = startDateTime.Day - 1;
-            var excludedStartBudget = startMonthBudget / daysInStartMonth * excludedStartDays;
-            return excludedStartBudget;
+            return totalBudget - excludedStartBudget - excludedEndBudget;
         }
     }
 }
