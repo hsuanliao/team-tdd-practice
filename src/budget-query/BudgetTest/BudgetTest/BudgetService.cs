@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BudgetTest
@@ -35,19 +34,10 @@ namespace BudgetTest
                     && int.Parse(o.YearMonth) <= endRange)
                 .Sum(o => o.Amount);
 
-            decimal excludedStartBudget;
-            var targetStartBudget = budgets.FirstOrDefault(b => int.Parse(b.YearMonth) == startRange);
-            if (targetStartBudget == null)
-            {
-                excludedStartBudget = 0;
-            }
-            else
-            {
-                var startMonthBudget = targetStartBudget.Amount;
-                var daysInStartMonth = DateTime.DaysInMonth(startDateTime.Year, startDateTime.Month);
-                var excludedStartDays = startDateTime.Day - 1;
-                excludedStartBudget = startMonthBudget / daysInStartMonth * excludedStartDays;
-            }
+            var excludedStartBudget = budgets
+                .FirstOrDefault(b => b.YearMonth.Equals(startDateTime.ToString("yyyyMM")));
+            var excludedStartDays = startDateTime.Day - 1;
+            var excludedStartBudgetAmount = GetExcludedTargetMonthBudget(excludedStartBudget, excludedStartDays);
 
             decimal excludedEndBudget;
             var targetEndBudget = budgets.FirstOrDefault(b => int.Parse(b.YearMonth) == endRange);
@@ -63,7 +53,28 @@ namespace BudgetTest
                 excludedEndBudget = endMonthBudget / daysInEndMonth * excludedEndDays;
             }
 
-            return totalBudget - excludedStartBudget - excludedEndBudget;
+            return totalBudget - excludedStartBudgetAmount - excludedEndBudget;
+        }
+
+        private static decimal GetExcludedTargetMonthBudget(Budget excludedBudget, int excludedDays)
+        {
+            //decimal excludedBudgetAmount;
+
+            //if (excludedBudget == null)
+            //{
+            //    excludedBudgetAmount = 0;
+            //}
+            //else
+            //{
+            //    var daysInMonth = excludedBudget.GetDaysInMonth();
+            //    //var daysInMonth2 = excludedBudget.DaysInMonth();
+            //    excludedBudgetAmount = excludedBudget.Amount / daysInMonth * excludedDays;
+            //}
+
+            //return excludedBudgetAmount;
+            return excludedBudget == null
+                ? 0
+                : excludedBudget.Amount / excludedBudget.GetDaysInMonth() * excludedDays;
         }
     }
 }
