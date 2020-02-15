@@ -14,67 +14,60 @@ namespace BudgetTest
 
         public decimal Query(DateTime startDateTime, DateTime endDateTime)
         {
-            if (startDateTime > endDateTime)
-            {
-                return 0;
-            }
-
             var budgets = _budgetRepository.GetAll();
-            if (budgets.Count == 0)
-            {
-                return 0;
-            }
 
             var startRange = int.Parse(startDateTime.ToString("yyyyMM"));
             var endRange = int.Parse(endDateTime.ToString("yyyyMM"));
-
-            var totalBudget = budgets
+            var inRangeBudgets = budgets
                 .Where(o =>
                     int.Parse(o.YearMonth) >= startRange
                     && int.Parse(o.YearMonth) <= endRange)
+                .ToList();
+
+            if (!inRangeBudgets.Any())
+            {
+                return 0;
+            }
+
+            var inRangeTotalBudgetAmount = inRangeBudgets
                 .Sum(o => o.Amount);
 
-            var excludedStartBudget = budgets
-                .FirstOrDefault(b => b.YearMonth.Equals(startDateTime.ToString("yyyyMM")));
-            var excludedStartDays = startDateTime.Day - 1;
-            var excludedStartBudgetAmount = GetExcludedTargetMonthBudget(excludedStartBudget, excludedStartDays);
+            var excludedBudgetAmount = GetExcludedBudgetAmount(
+                inRangeBudgets.First(), startDateTime, endDateTime);
 
-            decimal excludedEndBudget;
-            var targetEndBudget = budgets.FirstOrDefault(b => int.Parse(b.YearMonth) == endRange);
-            if (targetEndBudget == null)
+            if (inRangeBudgets.Count > 1)
             {
-                excludedEndBudget = 0;
-            }
-            else
-            {
-                var endMonthBudget = targetEndBudget.Amount;
-                var daysInEndMonth = DateTime.DaysInMonth(endDateTime.Year, endDateTime.Month);
-                var excludedEndDays = daysInEndMonth - endDateTime.Day;
-                excludedEndBudget = endMonthBudget / daysInEndMonth * excludedEndDays;
+                excludedBudgetAmount += GetExcludedBudgetAmount(
+                    inRangeBudgets.Last(), startDateTime, endDateTime);
             }
 
-            return totalBudget - excludedStartBudgetAmount - excludedEndBudget;
+            return inRangeTotalBudgetAmount - excludedBudgetAmount;
         }
 
-        private static decimal GetExcludedTargetMonthBudget(Budget excludedBudget, int excludedDays)
+        private static decimal GetExcludedBudgetAmount(Budget excludedStartBudget, DateTime startDateTime,
+            DateTime endDateTime)
         {
-            //decimal excludedBudgetAmount;
+            var excludedStartDays = GetExcludedDays(excludedStartBudget, startDateTime, endDateTime);
+            var excludedStartBudgetAmount = excludedStartBudget.Amount / excludedStartBudget.GetDaysInMonth() *
+                excludedStartDays;
+            return excludedStartBudgetAmount;
+        }
 
-            //if (excludedBudget == null)
-            //{
-            //    excludedBudgetAmount = 0;
-            //}
-            //else
-            //{
-            //    var daysInMonth = excludedBudget.GetDaysInMonth();
-            //    //var daysInMonth2 = excludedBudget.DaysInMonth();
-            //    excludedBudgetAmount = excludedBudget.Amount / daysInMonth * excludedDays;
-            //}
+        private static int GetExcludedDays(Budget budget, DateTime startDateTime, DateTime endDateTime)
+        {
+            var excludedDays = 0;
+            //if (budget.GetFirstDate() > startDateTime && startDateTime < budget.GetEndDate())
+            if (budget.YearMonth.Equals(startDateTime.ToString("yyyyMM")))
+            {
+                excludedDays = (startDateTime - budget.GetFirstDate()).Days;
+            }
 
-            //return excludedBudgetAmount;
-            return excludedBudget == null
-                ? 0
-                : excludedBudget.Amount / excludedBudget.GetDaysInMonth() * excludedDays;
+            if (budget.YearMonth.Equals(endDateTime.ToString("yyyyMM")))
+            {
+                excludedDays += (budget.GetLastDate() - endDateTime).Days;
+            }
+
+            return excludedDays;
         }
     }
 }

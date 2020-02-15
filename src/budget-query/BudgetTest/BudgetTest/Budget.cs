@@ -16,5 +16,10 @@ namespace BudgetTest
         {
             return DateTime.ParseExact($"{YearMonth}01", "yyyyMMdd", null);
         }
+
+        public DateTime GetLastDate()
+        {
+            return DateTime.ParseExact($"{YearMonth}{GetDaysInMonth()}", "yyyyMMdd", null);
+        }
     }
 }
